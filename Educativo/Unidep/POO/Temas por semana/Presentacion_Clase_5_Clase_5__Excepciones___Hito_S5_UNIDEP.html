@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase 5: Manejo Defensivo y Excepciones en Software - UNIDEP - Universidad del Desarrollo Profesional</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    pre, code, .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .print-slide { page-break-after: always; break-after: page; border: 1px solid #cbd5e1; margin-bottom: 2rem; padding: 2rem; border-radius: 1rem; }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-400 selection:text-slate-950">
+
+  <!-- Top Navigation & Controls Bar -->
+  <header class="no-print bg-slate-900 border-b border-slate-800 px-4 py-3 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider">
+          UNIDEP - Universidad del Desarrollo Profesional OFFLINE
+        </span>
+        <div>
+          <h1 class="text-sm font-bold text-white line-clamp-1">Clase 5: Manejo Defensivo y Excepciones en Software</h1>
+          <p class="text-[11px] text-slate-400 font-mono">Semana 5 · Unidad 7 (Hito Evaluativo Mayor)</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span id="slide-indicator" class="text-xs font-mono font-bold px-3 py-1 rounded-lg bg-slate-800 border border-slate-700 text-amber-300">
+          1 / 10
+        </span>
+        <button onclick="toggleLang()" id="btn-lang" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold transition-all">
+          C# .NET
+        </button>
+        <button onclick="toggleTheme()" id="btn-theme" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700" title="Cambiar tema claro/oscuro">
+          🌓 Modo
+        </button>
+        <button onclick="window.print()" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700">
+          🖨️ Imprimir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Slide Canvas Container -->
+  <main class="no-print flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center">
+    <div id="slide-card" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl min-h-[580px] flex flex-col justify-between transition-all">
+      <!-- Dynamic slide content injected by JavaScript -->
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="mt-4 flex items-center justify-between">
+      <button onclick="prevSlide()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-all flex items-center gap-2">
+        ← Anterior
+      </button>
+
+      <div id="dots-container" class="flex items-center gap-1.5 overflow-x-auto max-w-md px-2 py-1">
+        <!-- Dots injected here -->
+      </div>
+
+      <button onclick="nextSlide()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all flex items-center gap-2 shadow-lg">
+        Siguiente →
+      </button>
+    </div>
+
+    <!-- Quick Help & Shortcuts -->
+    <div class="mt-4 text-center text-slate-500 text-[11px]">
+      💡 Usa las teclas <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">←</kbd> y <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">→</kbd> para navegar las diapositivas. Archivo 100% autónomo para uso sin internet.
+    </div>
+  </main>
+
+  <script>
+    const slides = [{"id":"c5-s1","slideNumber":1,"type":"cover","title":"Manejo de Excepciones: Blindaje Defensivo contra el Caos","subtitle":"Semana 5 · Hito Evaluativo Mayor (Proyecto / Caso Integrador S1 a S4)","badge":"★ SEMANA CRÍTICA (40% Ponderación)","content":{"leadText":"El software profesional no es el que nunca falla, sino el que sabe atrapar sus fallos elegantemente sin colapsar en la cara del cliente.","bulletPoints":[{"icon":"🛡️","title":"La Red de Seguridad Try-Catch","desc":"Encierra zonas de peligro (red, archivos, cálculos) y atrapa el impacto del error."},{"icon":"💥","title":"Lanzamiento Controlado (throw)","desc":"Interrumpe operaciones imposibles antes de que corrompan la base de datos."},{"icon":"🏆","title":"Hito Evaluativo de la Semana 5","desc":"La Actividad 3 de esta semana pondera el 40% de la calificación final del curso (Caso Integrador)."}]},"speakerNotes":"Remarcar con fuerza que la Semana 5 es el punto culminante del cuatrimestre por ponderar el 40% de la materia. Motivarlos a prestar máxima atención hoy."},{"id":"c5-s2","slideNumber":2,"type":"real_world_analogy","title":"El Problema del Mundo Real: El Freno de Emergencia del Ascensor","subtitle":"La diferencia entre un choque mortal y una detención controlada","badge":"Analogía Cotidiana","content":{"imageUrl":"/src/assets/images/try_catch_shield_1791519193849.jpg","imageCaption":"El escudo defensivo atrapa el rayo de error destructivo y lo convierte en un registro amigable en el log.","analogyBox":{"title":"El Ascensor y los Frenos Magnéticos","analogy":"Si se corta el cable de un ascensor en un edificio, no quieres que la cabina caiga al vacío hasta estrellarse (lo que hace un programa sin try-catch: cerrarse de golpe). Los ingenieros instalan un freno magnético de emergencia (el bloque catch). Si el sensor detecta caída libre, los frenos se activan, la cabina se detiene suavemente, se enciende la luz de emergencia y suena la alarma para que vengan a rescatarte.","moral":"Un bloque try-catch es el freno de emergencia: no evita que se corte el cable, pero evita que mueras en el impacto."}},"speakerNotes":"Mostrar la ilustración del escudo. Explicar cómo un error no controlado en un banco congela terminales y transacciones."},{"id":"c5-s3","slideNumber":3,"type":"topic_breakdown","title":"Módulo Temático: Síntesis de Pilares y Arquitectura Limpia (U1 a U4)","subtitle":"Abstracción, encapsulamiento riguroso, arquitectura en capas y colecciones dinámicas List<T>","badge":"Integración Cuatrimestral · U1-U4","content":{"topicBreakdown":{"unitCode":"S5-A","unitTitle":"Síntesis Integradora de Pilares y Arquitectura Limpia","summary":"La articulación de los 4 pilares en una arquitectura desacoplada: Entidades (Model), Servicios (Business) y Consola (View) sin mezclar responsabilidades.","topics":[{"code":"S5.1","title":"Integración Completa de U1: Aspectos Conceptuales (Los 4 Pilares)","keyBadge":"Pilares POO","whatItMeans":"Articulación sistemática de los cuatro pilares fundamentales: Abstracción (modelar entidades reales), Encapsulamiento (ocultar el estado interno), Herencia (reutilización de código base) y Polimorfismo (ejecución de comportamientos específicos mediante una referencia común).","howToUse":"En el diseño del sistema integrador, cada clase debe tener una sola responsabilidad, protegiendo sus variables de instancia y exponiendo únicamente operaciones de alto nivel mediante interfaces.","appliedExample":{"scenario":"Los cuatro pilares articulados en un sistema de despacho","csharpCode":"// C# .NET: Los 4 pilares en acción\npublic interface IDespachable { void Despachar(); } // Abstracción\npublic abstract class Paquete : IDespachable { private double peso; } // Encapsulamiento\npublic class PaqueteUrgente : Paquete { } // Herencia\nIDespachable item = new PaqueteUrgente(); item.Despachar(); // Polimorfismo","javaCode":"// Java 17+\npublic interface Despachable { void despachar(); }\npublic abstract class Paquete implements Despachable { private double peso; }\npublic class PaqueteUrgente extends Paquete { }\nDespachable item = new PaqueteUrgente(); item.despachar();","visualAnalogyOrDiagram":"Los cuatro pilares sostienen la estructura completa de un templo de software profesional."}},{"code":"S5.2","title":"Integración Completa de U2: Clases, Objetos y Estado en Memoria","keyBadge":"Gestión de Memoria","whatItMeans":"Diferenciación exacta entre el ciclo de vida del molde (clase en el ClassLoader/Assembly) y las instancias vivas (objetos alojados en la memoria Heap referenciados desde punteros locales en el Stack).","howToUse":"Garantiza que toda entidad instanciada reserve memoria con \"new\" y que sus constructores sobrecargados inicialicen de forma determinista todos los atributos privados antes del primer uso.","appliedExample":{"scenario":"Instanciación y validación de entidades vehiculares","csharpCode":"// C# .NET\nVehiculo v1 = new(\"ABC-123\", 4500.0);\nVehiculo v2 = new(\"XYZ-789\", 1200.0); // Dos objetos distintos en Heap","javaCode":"// Java 17+\nVehiculo v1 = new Vehiculo(\"ABC-123\", 4500.0);\nVehiculo v2 = new Vehiculo(\"XYZ-789\", 1200.0);","visualAnalogyOrDiagram":"Stack (Punteros locales v1, v2) ──> Heap (Dos bloques independientes de memoria viva)."}},{"code":"S5.3","title":"Integración Completa de U3: Métodos Orientados a Objetos y this","keyBadge":"Lógica de Negocio","whatItMeans":"Estructuración de métodos de dominio empresarial con paso de parámetros por valor/referencia, retorno de tipos específicos y desambiguación obligatoria con \"this\" para vincular argumentos con atributos del objeto activo.","howToUse":"Usa this.atributo = atributo en todos los constructores y métodos mutadores para evitar el sombreado accidental (variable shadowing) que produce bugs silenciosos.","appliedExample":{"scenario":"Método de recálculo de flete con this","csharpCode":"// C# .NET\npublic double AsignarTarifa(double tarifaBase, double recargo) {\n    this.costoTotal = (tarifaBase * this.factorZona) + recargo;\n    return this.costoTotal;\n}","javaCode":"// Java 17+\npublic double asignarTarifa(double tarifaBase, double recargo) {\n    this.costoTotal = (tarifaBase * this.factorZona) + recargo;\n    return this.costoTotal;\n}","visualAnalogyOrDiagram":"El puntero \"this\" es la credencial de identidad del objeto que ejecuta la instrucción."}},{"code":"S5.4","title":"Integración Completa de U4: Expresiones, Operadores y Alcance","keyBadge":"Evaluación Numérica","whatItMeans":"Evaluación matemática y booleana sin errores de desbordamiento, respetando la precedencia de operadores (* y / antes de + y -), el cortocircuito lógico (&&, ||) y el ámbito léxico de variables de bloque.","howToUse":"Verifica siempre el tipo de dato al dividir (usar double/decimal en lugar de división entera truncada int) y encierra entre paréntesis las subexpresiones críticas.","appliedExample":{"scenario":"Cálculo de descuento porcentual y validación crediticia","csharpCode":"// C# .NET\nbool esElegible = (cliente.AntiguedadAnios >= 2) && (cliente.SaldoPendiente == 0);\ndouble subtotal = precioBase * (1.0 - (descuentoPorc / 100.0));","javaCode":"// Java 17+\nboolean esElegible = (cliente.getAntiguedadAnios() >= 2) && (cliente.getSaldoPendiente() == 0);\ndouble subtotal = precioBase * (1.0 - (descuentoPorc / 100.0));","visualAnalogyOrDiagram":"Báscula de precisión: la precedencia de paréntesis determina el peso de cada cálculo."}},{"code":"S5.5","title":"Colecciones Dinámicas (List<T>) y Arquitectura Limpia en Capas","keyBadge":"Estructuras Modernas","whatItMeans":"Uso de colecciones dinámicas que crecen elásticamente en lugar de arreglos rígidos, estructurando el proyecto en capas separadas: Modelo (entidades), Servicio (lógica de negocio) y Vista (consola).","howToUse":"Separa la entrada/salida de datos de las clases de cálculo. Las clases del Modelo y Servicio jamás deben contener llamadas a Console.Write o System.out.print.","appliedExample":{"scenario":"Flota dinámica de entregas en Mercado Envíos","csharpCode":"// C# .NET\nList<Vehiculo> flota = new();\nflota.Add(new Camion(\"CAM-01\", 12000.0));\nflota.Add(new Moto(\"MOT-02\", 25.0));","javaCode":"// Java 17+\nList<Vehiculo> flota = new ArrayList<>();\nflota.add(new Camion(\"CAM-01\", 12000.0));\nflota.add(new Moto(\"MOT-02\", 25.0));","visualAnalogyOrDiagram":"Bandeja rígida de 6 huevos (Arreglo fijo) vs Carrito de compras expandible (Lista dinámica List<T>)."}}]}},"speakerNotes":"Repasar la articulación de los 4 pilares y la separación en capas para que el código del examen sea modular y fácil de defender."},{"id":"c5-s4","slideNumber":4,"type":"topic_breakdown","title":"Módulo Temático: Preparación Examen Final y Caso Integrador (U5 a U8)","subtitle":"Técnicas de live-coding en 45 minutos, preguntas trampa frecuentes y caso rector Mercado Envíos","badge":"Hito Evaluativo · Examen Final","content":{"topicBreakdown":{"unitCode":"S5-B","unitTitle":"Estrategia de Examen Final y Caso Integrador Mercado Envíos","summary":"Las directrices clave para aprobar el examen teórico-práctico presencial (30%) y estructurar el caso integrador con polimorfismo dinámico.","topics":[{"code":"S5.6","title":"Integración Completa de U5: Sentencias de Control y Menús","keyBadge":"Flujo de Ejecución","whatItMeans":"Control del flujo del programa mediante bifurcaciones defensivas (if-else if-else), menús navegables estructurados con switch-case y bucles iterativos (while, do-while, for) para procesar conjuntos de transacciones.","howToUse":"Estructura el bucle principal con un menú interactivo en consola y un indicador booleano de salida, protegiendo cada opción con switch exhaustivo.","appliedExample":{"scenario":"Menú principal interactivo de la terminal de logística","csharpCode":"// C# .NET\nint opcion;\ndo {\n    Console.WriteLine(\"1. Registrar 2. Despachar 0. Salir\");\n    opcion = int.Parse(Console.ReadLine() ?? \"0\");\n    switch (opcion) { /* Casos */ }\n} while (opcion != 0);","javaCode":"// Java 17+\ndo {\n    System.out.println(\"1. Registrar 2. Despachar 0. Salir\");\n    opcion = scanner.nextInt();\n    switch (opcion) { /* Casos */ }\n} while (opcion != 0);","visualAnalogyOrDiagram":"Semáforo y rotonda: switch selecciona el carril y do-while mantiene la rotonda activa hasta elegir salida."}},{"code":"S5.7","title":"Integración Completa de U6: Arreglos y Matrices Multidimensionales","keyBadge":"Matrices de Datos","whatItMeans":"Modelado de cuadrículas de información (tablas bidimensionales [filas, columnas]) para representar matrices de costos de flete por zona geográfica, inventarios o tableros de control.","howToUse":"Recorre matrices con bucles for anidados: el índice externo gestiona las filas y el interno las columnas, validando que ningún índice sobrepase los límites de dimensión.","appliedExample":{"scenario":"Matriz de distancias y costos entre 3 centros de distribución","csharpCode":"// C# .NET: Matriz 3x3 de tarifas\ndouble[,] tarifas = {\n    { 0.0, 150.0, 320.0 },\n    { 150.0, 0.0, 180.0 },\n    { 320.0, 180.0, 0.0 }\n};\ndouble costoRuta = tarifas[origen, destino];","javaCode":"// Java 17+\ndouble[][] tarifas = {\n    { 0.0, 150.0, 320.0 },\n    { 150.0, 0.0, 180.0 },\n    { 320.0, 180.0, 0.0 }\n};\ndouble costoRuta = tarifas[origen][destino];","visualAnalogyOrDiagram":"Plano cartesiano de casilleros: la coordenada [fila][columna] localiza el valor exacto en tiempo constante O(1)."}},{"code":"S5.8","title":"Integración Completa de U7: Herencia, Polimorfismo e Interfaces","keyBadge":"Diseño Jerárquico","whatItMeans":"La piedra angular de la reutilización: superclases abstractas con código común, contratos IOperable/IVehiculo con métodos sin implementar, y clases concretas que sobrescriben operaciones mediante ligadura dinámica.","howToUse":"Programa siempre hacia la interfaz o clase base. Una sola colección de tipo IVehiculo puede despachar camiones, motos y furgonetas en un solo bucle foreach.","appliedExample":{"scenario":"Despacho polimórfico en un solo ciclo de ejecución","csharpCode":"// C# .NET: Polimorfismo puro\nforeach (Vehiculo v in flota) {\n    Console.WriteLine($\"{v.Placa}: Costo = ${v.CalcularCostoEnvio(150.0)}\");\n}","javaCode":"// Java 17+\nfor (Vehiculo v : flota) {\n    System.out.println(v.getPlaca() + \": Costo = $\" + v.calcularCostoEnvio(150.0));\n}","visualAnalogyOrDiagram":"Cinta transportadora de aeropuerto: procesa maletas de mano, cajas y mochilas con el mismo escáner unificado."}},{"code":"S5.9","title":"Integración Completa de U8: Contenedores Gráficos, Applets y GUI","keyBadge":"Interfaz Visual","whatItMeans":"Comprensión del ciclo de vida visual de una aplicación (inicialización init, renderizado paint/draw y destrucción destroy) tanto en contenedores gráficos históricos como en paneles modernos de escritorio.","howToUse":"Separa la capa gráfica del motor de cálculo. La interfaz sólo recolecta clics o campos de texto y delega el cálculo a las clases de servicio del modelo.","appliedExample":{"scenario":"Panel visual de monitoreo de despacho","csharpCode":"// C# .NET (WPF / WinForms / Console GUI)\npublic void DibujarResumen(Vehiculo v) {\n    // Dibuja tarjeta con estado y barra de carga\n}","javaCode":"// Java 17+ (Swing / AWT / Applet histórico)\npublic void paint(Graphics g) {\n    g.drawString(\"Vehículo: \" + v.getPlaca(), 20, 40);\n}","visualAnalogyOrDiagram":"Tablero de instrumentos del auto: muestra la velocidad sin que el velocímetro tenga que ser el motor que mueve las ruedas."}},{"code":"S5.10","title":"Aplicación Formal del Examen Final (30%) & Caso Integrador","keyBadge":"Evaluación Oficial","whatItMeans":"Estrategia táctica para resolver el examen práctico de cátedra (45 minutos de live-coding) y defender el caso integrador rector (Mercado Envíos) sin bloqueos ni errores de compilación.","howToUse":"Cronograma táctico en 4 fases: Minutos 0-10: Modelar entidades base y atributos privados. Minutos 10-25: Lógica de negocio con métodos. Minutos 25-40: Menú principal y pruebas con 3 objetos. Minutos 40-45: Verificación final.","appliedExample":{"scenario":"Checklist previo a la entrega del examen","csharpCode":"// 1. ¿Todos los atributos son private? -> SÍ\n// 2. ¿Se usó new para cada objeto? -> SÍ\n// 3. ¿El método polimórfico tiene override? -> SÍ\n// 4. ¿Compila sin advertencias? -> SÍ (100 puntos)","javaCode":"// 1. Atributos private con getters/setters -> SÍ\n// 2. Strings comparados con .equals() -> SÍ\n// 3. Anotación @Override en subclases -> SÍ\n// 4. Compilación limpia -> SÍ","visualAnalogyOrDiagram":"Lista de verificación de despegue de un avión: revisas los 4 puntos críticos antes de encender motores."}}]}},"speakerNotes":"Detallar las estrategias para el examen presencial: cómo abordar los 45 minutos de live-coding y evitar los 3 reactivos trampa más comunes."},{"id":"c5-s5","slideNumber":5,"type":"core_concept_dual","title":"Concepto Clave: Colecciones Dinámicas Polimórficas en C# y Java","subtitle":"Procesamiento de jerarquías heterogéneas con List<T> en lugar de arreglos rígidos","badge":"Síntesis U1-U8","content":{"codeComparison":{"concept":"Despacho polimórfico en un solo bucle sobre List<Vehiculo>","csharpCode":"// C# .NET 8 (Colección elástica de tipo base)\nList<Vehiculo> flota = new()\n{\n    new Camion(\"CAM-01\", 12000.0, factorEjes: 1.5),\n    new Motocicleta(\"MOT-02\", 25.0),\n    new Camion(\"CAM-03\", 8500.0, factorEjes: 1.2)\n};\n\ndouble totalFlete = 0;\nforeach (Vehiculo v in flota)\n{\n    // ¡Ligadura dinámica! Cada objeto ejecuta su propia fórmula\n    double flete = v.CalcularCostoEnvio(distanciaKm: 120.0);\n    totalFlete += flete;\n    Console.WriteLine($\"• {v.Placa} ({v.GetType().Name}): ${flete:F2}\");\n}\nConsole.WriteLine($\"TOTAL FLOTA MERCADO ENVÍOS: ${totalFlete:F2}\");","javaCode":"// Java JDK 17+ (List<Vehiculo> con polimorfismo)\nList<Vehiculo> flota = List.of(\n    new Camion(\"CAM-01\", 12000.0, 1.5),\n    new Motocicleta(\"MOT-02\", 25.0),\n    new Camion(\"CAM-03\", 8500.0, 1.2)\n);\n\ndouble totalFlete = 0;\nfor (Vehiculo v : flota) {\n    // Despacho polimórfico en tiempo de ejecución\n    double flete = v.calcularCostoEnvio(120.0);\n    totalFlete += flete;\n    System.out.printf(\"• %s: $%.2f%n\", v.getPlaca(), flete);\n}\nSystem.out.printf(\"TOTAL FLOTA: $%.2f%n\", totalFlete);","explanation":"El polimorfismo permite iterar sobre una lista de tipo base Vehiculo y ejecutar la versión específica del método de cada subclase sin un solo if o switch."}},"speakerNotes":"Demostrar que al agregar un nuevo tipo (ej. Furgoneta) el bucle foreach no cambia en absoluto. Eso es el principio Abierto/Cerrado (OCP)."},{"id":"c5-s6","slideNumber":6,"type":"instruction_anatomy","title":"Anatomía de la Instrucción: Despacho Polimórfico en el Caso Integrador","subtitle":"Desglose token por token de la línea medular evaluada en el examen presencial","badge":"⭐ Anatomía Visual de la Instrucción","content":{"instructionAnatomy":{"instructionStatement":"totalFlete += vehiculo.CalcularCostoEnvio(distanciaKm, recargoUrgente);","statementContext":"La línea reina de la POO: una referencia genérica ejecuta la fórmula exacta de Camión o Motocicleta en tiempo de ejecución.","parts":[{"token":"totalFlete +=","name":"1. Acumulador de Negocio","role":"Suma y almacena el resultado numérico en memoria local del Stack.","everydayAnalogy":"La caja registradora sumando el costo de cada paquete entregado.","color":"amber"},{"token":"vehiculo","name":"2. Puntero Polimórfico","role":"Variable de tipo base Vehiculo que apunta dinámicamente a una instancia real en el Heap.","everydayAnalogy":"El chofer al volante: no importa su uniforme, sabe cómo conducir su unidad.","color":"blue"},{"token":".","name":"3. Operador de Envío de Mensaje","role":"Solicita al objeto destinatario que active uno de sus métodos.","everydayAnalogy":"La orden por radio al vehículo: \"calcula tu tarifa para esta ruta\".","color":"purple"},{"token":"CalcularCostoEnvio(...)","name":"4. Método Virtual / Abstracto","role":"Invocación vinculada dinámicamente mediante la tabla de métodos virtuales (vtable).","everydayAnalogy":"El taxímetro o báscula interna del vehículo realizando el cálculo.","color":"emerald"},{"token":"(distanciaKm, recargoUrgente)","name":"5. Argumentos de Negocio","role":"Valores concretos pasados por valor a la pila de ejecución del método.","everydayAnalogy":"Los datos de la guía de envío: kilómetros a recorrer y si es entrega express.","color":"cyan"}],"takeaway":"El despacho polimórfico sustituye 20 sentencias if-else por una sola invocación limpia, escalable y mantenible."}},"speakerNotes":"Enfatizar que si vehiculo es null ocurrirá NullReferenceException, por lo que las listas bien construidas deben validar los elementos antes de procesarlos."},{"id":"c5-s7","slideNumber":7,"type":"simple_example","title":"Ejemplo Integrador en Vivo: Flota Mercado Envíos (U1 a U8)","subtitle":"Código compilable de 35 líneas con clases, herencia, interfaces y colecciones","badge":"Simulación de Examen","content":{"simpleExample":{"domainScenario":"Cálculo de despacho para 1 Camión de carga pesada y 1 Moto de envíos rápidos en la plataforma Mercado Envíos.","csharpSnippet":"using System;\nusing System.Collections.Generic;\n\n// Contrato de transporte\npublic interface IDespachable {\n    double CalcularCostoEnvio(double km);\n}\n\n// Superclase base abstracta\npublic abstract class Vehiculo : IDespachable {\n    public string Placa { get; }\n    public double CapacidadKg { get; }\n    protected Vehiculo(string placa, double cap) => (Placa, CapacidadKg) = (placa, cap);\n    public abstract double CalcularCostoEnvio(double km);\n}\n\n// Subclases polimórficas\npublic class Camion : Vehiculo {\n    public Camion(string p, double c) : base(p, c) {}\n    public override double CalcularCostoEnvio(double km) => 500.0 + (km * 18.5);\n}\n\npublic class Moto : Vehiculo {\n    public Moto(string p, double c) : base(p, c) {}\n    public override double CalcularCostoEnvio(double km) => 80.0 + (km * 6.2);\n}\n\nclass Program {\n    static void Main() {\n        List<Vehiculo> flota = new() { new Camion(\"CAM-01\", 12000), new Moto(\"MOT-02\", 25) };\n        double total = 0;\n        foreach (var v in flota) {\n            double c = v.CalcularCostoEnvio(50.0);\n            total += c;\n            Console.WriteLine($\"{v.Placa}: ${c}\");\n        }\n        Console.WriteLine($\"Flete Total del Día: ${total}\");\n    }\n}","javaSnippet":"// Equivalente en Java 17+ con abstract class Vehiculo y List<Vehiculo>","consoleOutput":"CAM-01: $1425\nMOT-02: $390\nFlete Total del Día: $1815","stepByStepExplanation":["Se define la interfaz IDespachable y la superclase abstracta Vehiculo.","Camión y Moto heredan de Vehiculo e implementan su fórmula específica en CalcularCostoEnvio.","El método Main crea una lista genérica List<Vehiculo> y procesa ambos transportes en un solo bucle polimórfico."]}},"speakerNotes":"Demostrar en vivo cómo el examen práctico evalúa exactamente esta misma arquitectura."},{"id":"c5-s8","slideNumber":8,"type":"common_mistakes","title":"Las 3 Trampas Clásicas en el Examen Final Presencial","subtitle":"Errores frecuentes donde los estudiantes pierden puntos en la prueba en vivo","badge":"Tips de Evaluación","content":{"commonMistakes":[{"wrongCode":"// ❌ ERROR 1: Olvidar override / @Override\npublic class Camion : Vehiculo {\n    public double CalcularCostoEnvio(double km) { ... } // ¡Sin override!\n}","wrongExplanation":"Al omitir override en C# o @Override en Java, el compilador oculta el método en lugar de sobrescribirlo. Cuando llamas a la función desde una lista de tipo Vehiculo, se ejecuta el método de la base y NO el del Camión.","rightCode":"// ✅ FORMA CORRECTA\npublic class Camion : Vehiculo {\n    public override double CalcularCostoEnvio(double km) { ... }\n}","rightExplanation":"La palabra clave override (C#) o anotación @Override (Java) activa la ligadura dinámica (dynamic binding) en la vtable.","ruleOfThumb":"Toda subclase que implemente un método virtual o abstracto DEBE llevar override."},{"wrongCode":"// ❌ ERROR 2: Comparar Strings con == en Java\nif (vehiculo.getTipo() == \"Camion\") { ... }","wrongExplanation":"En Java, el operador == compara la dirección de memoria física en el Heap, NO el texto. Si dos Strings se crearon en distintos momentos, la condición dará false aunque tengan el mismo texto.","rightCode":"// ✅ FORMA CORRECTA EN JAVA\nif (\"Camion\".equals(vehiculo.getTipo())) { ... }","rightExplanation":"Usa siempre .equals() para comparar cadenas en Java. En C# el operador == sí está sobrecargado para comparar contenido.","ruleOfThumb":"En Java usa siempre .equals(); en C# usa == o string.Equals()."}]},"speakerNotes":"Repasar estos dos errores en la pizarra. El 40% de los fallos en exámenes se deben a olvidar override o comparar Strings incorrectamente."},{"id":"c5-s9","slideNumber":9,"type":"classroom_challenge","title":"Simulacro de Examen: Extensión de la Flota en 10 Minutos","subtitle":"Ejercicio cronometrado de live-coding idéntico al examen presencial","badge":"Reto Cronometrado (10 min)","content":{"challenge":{"timeMinutes":10,"question":"Diseña la clase Furgoneta y agrégala a la flota polimórfica","instructions":"Hereda de Vehiculo, asigna una tarifa base de $200 + $12 por km y demuestra su cálculo en la lista polimórfica.","expectedAnswer":"public class Furgoneta : Vehiculo { public Furgoneta(string p, double c) : base(p, c) {} public override double CalcularCostoEnvio(double km) => 200 + (km * 12); }"}},"speakerNotes":"Dar 10 minutos reales en laboratorio y pasar revisando pantallas para validar que usen el constructor base y override."},{"id":"c5-s10","slideNumber":10,"type":"weekly_activity_bridge","title":"Semana 5: Hito de Evaluación Presencial (30%) & Caso Integrador","subtitle":"Examen Teórico-Práctico en Laboratorio UNIDEP sobre Unidades 1 a 8","badge":"★ HITO EVALUATIVO S5 (30%)","content":{"activityBridge":{"act1Title":"Parte Teórico-Conceptual (40% del Examen)","act1Desc":"Evaluación de conceptos de memoria (Stack vs Heap), pilares de POO, visibilidad y sintaxis dual.","act2Title":"Parte Práctica Live-Coding (60% del Examen)","act2Desc":"Resolución individual en computadora de un problema orientado a objetos completo en 45 minutos.","act3Title":"Caso Integrador Rector: Mercado Envíos / Flota","act3Desc":"El proyecto que reúne todas las competencias del curso antes del blindaje con excepciones de Semana 6."}},"speakerNotes":"Motivar a los estudiantes recordándoles que cuentan con todas las herramientas de las Semanas 1 a 4 para obtener una calificación sobresaliente."}];
+    let currentIndex = 0;
+    let currentLang = 'csharp';
+    let isDark = true;
+    let selectedAnatomyIndex = 0;
+    let selectedTopicIndex = 0;
+    let showAllTopicsGrid = false;
+
+    function renderSlide() {
+      const slide = slides[currentIndex];
+      const card = document.getElementById('slide-card');
+      const indicator = document.getElementById('slide-indicator');
+      indicator.textContent = (currentIndex + 1) + ' / ' + slides.length;
+
+      // Update dots
+      const dotsContainer = document.getElementById('dots-container');
+      dotsContainer.innerHTML = '';
+      slides.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.className = idx === currentIndex
+          ? 'w-6 h-2 rounded-full bg-amber-500 transition-all'
+          : 'w-2 h-2 rounded-full bg-slate-700 hover:bg-slate-500 transition-all';
+        dot.onclick = () => { currentIndex = idx; selectedAnatomyIndex = 0; renderSlide(); };
+        dotsContainer.appendChild(dot);
+      });
+
+      let inner = '';
+
+      // Slide Top Meta
+      inner += '<div class="flex items-center justify-between border-b ' + (isDark ? 'border-slate-800 pb-4 mb-6' : 'border-slate-200 pb-4 mb-6') + '">';
+      inner += '  <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500 text-slate-950">' + slide.badge + '</span>';
+      inner += '  <span class="text-xs font-mono text-slate-400">' + slide.type.toUpperCase().replace(/_/g, ' ') + '</span>';
+      inner += '</div>';
+
+      // Title & Subtitle
+      inner += '<div class="mb-6">';
+      inner += '  <h2 class="text-2xl sm:text-3xl font-black leading-tight text-white mb-2">' + slide.title + '</h2>';
+      inner += '  <p class="text-sm sm:text-base ' + (isDark ? 'text-slate-300' : 'text-slate-600') + '">' + slide.subtitle + '</p>';
+      inner += '</div>';
+
+      // Slide Content based on type
+      if (slide.type === 'cover') {
+        inner += '<div class="space-y-6">';
+        inner += '  <p class="text-base sm:text-lg text-amber-300 font-semibold">' + (slide.content.leadText || '') + '</p>';
+        if (slide.content.bulletPoints) {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">';
+          slide.content.bulletPoints.forEach(bp => {
+            inner += '    <div class="p-4 rounded-2xl border ' + (isDark ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200 text-slate-900') + '">';
+            inner += '      <div class="text-2xl mb-2">' + (bp.icon || '📌') + '</div>';
+            inner += '      <h3 class="font-bold text-sm mb-1">' + bp.title + '</h3>';
+            inner += '      <p class="text-xs text-slate-400">' + bp.desc + '</p>';
+            inner += '    </div>';
+          });
+          inner += '  </div>';
+        }
+        inner += '</div>';
+      } else if (slide.type === 'real_world_analogy') {
+        inner += '<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">';
+        if (slide.content.imageUrl) {
+          inner += '  <div class="rounded-2xl overflow-hidden border border-slate-800 bg-black">';
+          inner += '    <img src="' + slide.content.imageUrl + '" alt="' + slide.title + '" class="w-full max-h-72 object-contain mx-auto" onerror="this.style.display=\'none\'">';
+          if (slide.content.imageCaption) {
+            inner += '    <p class="p-2 text-center text-xs text-slate-400 italic">' + slide.content.imageCaption + '</p>';
+          }
+          inner += '  </div>';
+        }
+        if (slide.content.analogyBox) {
+          inner += '  <div class="p-5 rounded-2xl border bg-amber-950/20 border-amber-500/30 text-slate-200 space-y-3">';
+          inner += '    <h3 class="text-xs uppercase font-black tracking-wider text-amber-400">💡 ' + slide.content.analogyBox.title + '</h3>';
+          inner += '    <p class="text-xs sm:text-sm leading-relaxed">' + slide.content.analogyBox.analogy + '</p>';
+          inner += '    <div class="pt-2 border-t border-amber-500/20 text-xs font-bold text-amber-300">📌 Conclusión: ' + slide.content.analogyBox.moral + '</div>';
+          inner += '  </div>';
+        }
+        inner += '</div>';
+      } else if (slide.type === 'topic_breakdown' && slide.content.topicBreakdown) {
+        const tb = slide.content.topicBreakdown;
+        const total = tb.topics.length;
+        const activeTopic = tb.topics[selectedTopicIndex] || tb.topics[0];
+        const code = currentLang === 'csharp' ? activeTopic.appliedExample.csharpCode : activeTopic.appliedExample.javaCode;
+
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="p-3.5 rounded-2xl border ' + (isDark ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200 text-slate-900') + ' flex items-center justify-between flex-wrap gap-2">';
+        inner += '    <div class="flex items-center gap-2">';
+        inner += '      <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-xs font-mono">' + tb.unitCode + '</span>';
+        inner += '      <div><h3 class="font-black text-sm leading-tight">' + tb.unitTitle + '</h3><p class="text-[11px] text-slate-400">' + tb.summary + '</p></div>';
+        inner += '    </div>';
+        inner += '    <div class="flex items-center gap-2">';
+        inner += '      <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">' + total + ' temas</span>';
+        inner += '      <button onclick="toggleTopicGrid()" class="text-xs font-bold px-2.5 py-1 rounded-lg border ' + (showAllTopicsGrid ? 'bg-amber-500 text-slate-950 border-amber-400' : 'bg-slate-800 border-slate-700 text-amber-300 hover:bg-slate-700') + '">' + (showAllTopicsGrid ? 'Vista Enfocada' : 'Ver Todos en Cuadrícula') + '</button>';
+        inner += '    </div>';
+        inner += '  </div>';
+
+        if (!showAllTopicsGrid) {
+          inner += '  <div class="flex items-center gap-1.5 overflow-x-auto pb-1">';
+          tb.topics.forEach((t, tIdx) => {
+            const isSel = tIdx === selectedTopicIndex;
+            inner += '    <button onclick="selectTopic(' + tIdx + ')" class="px-3 py-1.5 rounded-xl text-xs font-bold border shrink-0 transition-all ' + (isSel ? 'bg-amber-500 text-slate-950 border-amber-400 font-black' : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700') + '">';
+            inner += '      <span class="font-mono bg-black/20 px-1.5 py-0.5 rounded text-[10px]">' + t.code + '</span> ' + t.title;
+            inner += '    </button>';
+          });
+          inner += '  </div>';
+
+          inner += '  <div class="p-5 rounded-2xl border ' + (isDark ? 'bg-slate-950/90 border-slate-800' : 'bg-white border-slate-200 text-slate-900') + '">';
+          inner += '    <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">';
+          inner += '      <div class="flex items-center gap-2">';
+          inner += '        <span class="font-mono font-black text-xs px-2 py-0.5 rounded bg-amber-500 text-slate-950">' + activeTopic.code + '</span>';
+          inner += '        <h4 class="text-base font-black">' + activeTopic.title + '</h4>';
+          if (activeTopic.keyBadge) {
+            inner += '        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">' + activeTopic.keyBadge + '</span>';
+          }
+          inner += '      </div>';
+          inner += '      <span class="text-xs font-mono text-slate-400">Tema ' + (selectedTopicIndex + 1) + ' de ' + total + '</span>';
+          inner += '    </div>';
+
+          inner += '    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">';
+          inner += '      <div class="space-y-3">';
+          inner += '        <div class="p-3.5 rounded-xl border ' + (isDark ? 'bg-blue-950/20 border-blue-500/30' : 'bg-blue-50 border-blue-200') + '">';
+          inner += '          <div class="text-blue-400 font-black text-xs uppercase mb-1">📖 ¿Qué Significa? (Definición Sencilla)</div>';
+          inner += '          <p class="text-xs leading-relaxed ' + (isDark ? 'text-slate-200' : 'text-slate-800') + '">' + activeTopic.whatItMeans + '</p>';
+          inner += '        </div>';
+          inner += '        <div class="p-3.5 rounded-xl border ' + (isDark ? 'bg-amber-950/20 border-amber-500/30' : 'bg-amber-50 border-amber-200') + '">';
+          inner += '          <div class="text-amber-400 font-black text-xs uppercase mb-1">⚙️ ¿Cómo se Utiliza? (Regla Técnica)</div>';
+          inner += '          <p class="text-xs leading-relaxed ' + (isDark ? 'text-slate-200' : 'text-slate-800') + '">' + activeTopic.howToUse + '</p>';
+          inner += '        </div>';
+          if (activeTopic.appliedExample.visualAnalogyOrDiagram) {
+            inner += '        <div class="p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-300 text-xs font-mono">';
+            inner += '          🖼️ ' + activeTopic.appliedExample.visualAnalogyOrDiagram;
+            inner += '        </div>';
+          }
+          inner += '      </div>';
+
+          inner += '      <div class="space-y-2">';
+          inner += '        <div class="p-2.5 rounded-xl border border-slate-800 bg-slate-900/90 text-xs text-slate-300 flex items-center justify-between">';
+          inner += '          <span>💡 <strong>Escenario:</strong> ' + activeTopic.appliedExample.scenario + '</span>';
+          inner += '          <span class="text-amber-400 text-[10px] font-bold font-mono">' + (currentLang === 'csharp' ? 'C# .NET' : 'Java 17') + '</span>';
+          inner += '        </div>';
+          inner += '        <pre class="p-3 rounded-xl bg-black border border-slate-800 font-mono text-xs text-emerald-300 whitespace-pre overflow-x-auto leading-relaxed">' + escapeHtml(code) + '</pre>';
+          inner += '      </div>';
+          inner += '    </div>';
+
+          inner += '    <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">';
+          inner += '      <button onclick="selectTopic(' + (selectedTopicIndex > 0 ? selectedTopicIndex - 1 : total - 1) + ')" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold">← Tema Anterior</button>';
+          inner += '      <button onclick="selectTopic(' + (selectedTopicIndex < total - 1 ? selectedTopicIndex + 1 : 0) + ')" class="px-3 py-1.5 rounded-lg border border-amber-500/50 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-xs">Siguiente Tema →</button>';
+          inner += '    </div>';
+          inner += '  </div>';
+        } else {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[460px] overflow-y-auto pr-1">';
+          tb.topics.forEach(t => {
+            const cd = currentLang === 'csharp' ? t.appliedExample.csharpCode : t.appliedExample.javaCode;
+            inner += '    <div class="p-3.5 rounded-2xl border ' + (isDark ? 'bg-slate-950/80 border-slate-800' : 'bg-white border-slate-200') + ' space-y-2">';
+            inner += '      <div class="flex items-center justify-between gap-1">';
+            inner += '        <span class="font-mono font-bold text-xs px-2 py-0.5 rounded bg-amber-500 text-slate-950">' + t.code + '</span>';
+            inner += '        <h4 class="font-bold text-xs text-white">' + t.title + '</h4>';
+            inner += '      </div>';
+            inner += '      <p class="text-[11px] text-slate-300"><strong>Qué significa:</strong> ' + t.whatItMeans + '</p>';
+            inner += '      <p class="text-[11px] text-amber-300/90"><strong>Cómo se usa:</strong> ' + t.howToUse + '</p>';
+            inner += '      <pre class="p-2 rounded-xl bg-black border border-slate-800 font-mono text-[10px] text-emerald-400 whitespace-pre overflow-x-auto">' + escapeHtml(cd) + '</pre>';
+            inner += '    </div>';
+          });
+          inner += '  </div>';
+        }
+
+        inner += '</div>';
+      } else if (slide.type === 'core_concept_dual' && slide.content.codeComparison) {
+        const comp = slide.content.codeComparison;
+        const code = currentLang === 'csharp' ? comp.csharpCode : comp.javaCode;
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="flex items-center justify-between text-xs text-amber-400 font-bold">';
+        inner += '    <span>' + comp.concept + '</span>';
+        inner += '    <span class="font-mono text-slate-400">' + (currentLang === 'csharp' ? 'Program.cs (.NET 8)' : 'Main.java (Java 17)') + '</span>';
+        inner += '  </div>';
+        inner += '  <pre class="p-4 rounded-2xl bg-black border border-slate-800 font-mono text-xs sm:text-sm text-slate-100 overflow-x-auto whitespace-pre leading-relaxed">' + escapeHtml(code) + '</pre>';
+        inner += '  <p class="p-3 rounded-xl border border-slate-800 bg-slate-950 text-xs sm:text-sm text-slate-300">💡 ' + comp.explanation + '</p>';
+        inner += '</div>';
+      } else if (slide.type === 'instruction_anatomy' && slide.content.instructionAnatomy) {
+        const anat = slide.content.instructionAnatomy;
+        const activePart = anat.parts[selectedAnatomyIndex] || anat.parts[0];
+        inner += '<div class="space-y-5">';
+        inner += '  <div class="p-4 rounded-2xl bg-black border border-slate-800 font-mono text-sm sm:text-base text-emerald-300 font-bold overflow-x-auto whitespace-pre">' + escapeHtml(anat.instructionStatement) + '</div>';
+        inner += '  <div class="flex flex-wrap gap-2">';
+        anat.parts.forEach((p, pIdx) => {
+          const isAct = pIdx === selectedAnatomyIndex;
+          inner += '    <button onclick="selectAnatomy(' + pIdx + ')" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ' + (isAct ? 'bg-amber-500 text-slate-950 border-amber-400' : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700') + '">';
+          inner += '      <span class="font-mono">' + p.token + '</span> · ' + p.name;
+          inner += '    </button>';
+        });
+        inner += '  </div>';
+        inner += '  <div class="p-5 rounded-2xl border border-amber-500/30 bg-amber-950/20 text-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">';
+        inner += '    <div><strong class="text-amber-400 block mb-1">⚙️ ¿Qué hace en la memoria / procesador?</strong><p>' + activePart.role + '</p></div>';
+        inner += '    <div><strong class="text-emerald-400 block mb-1">💡 Analogía sencilla para cualquiera:</strong><p>"' + activePart.everydayAnalogy + '"</p></div>';
+        inner += '  </div>';
+        inner += '</div>';
+      } else if (slide.type === 'simple_example' && slide.content.simpleExample) {
+        const ex = slide.content.simpleExample;
+        const code = currentLang === 'csharp' ? ex.csharpSnippet : ex.javaSnippet;
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="p-3 rounded-xl border border-amber-500/30 bg-amber-950/20 text-xs sm:text-sm text-amber-300">🎯 <strong>Escenario Cotidiano:</strong> ' + ex.domainScenario + '</div>';
+        inner += '  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">';
+        inner += '    <div><pre class="p-4 rounded-xl bg-black border border-slate-800 font-mono text-xs text-slate-100 overflow-x-auto max-h-64 leading-relaxed">' + escapeHtml(code) + '</pre></div>';
+        inner += '    <div class="space-y-3">';
+        inner += '      <pre class="p-3 rounded-xl bg-black border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto whitespace-pre">' + escapeHtml(ex.consoleOutput) + '</pre>';
+        inner += '      <div class="space-y-1">';
+        ex.stepByStepExplanation.forEach(st => {
+          inner += '        <div class="text-xs text-slate-300 flex items-start gap-1.5"><span>✓</span><span>' + st + '</span></div>';
+        });
+        inner += '      </div>';
+        inner += '    </div>';
+        inner += '  </div>';
+        inner += '</div>';
+      } else if (slide.type === 'common_mistakes' && slide.content.commonMistakes) {
+        inner += '<div class="space-y-4">';
+        slide.content.commonMistakes.forEach(cm => {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">';
+          inner += '    <div class="p-4 rounded-2xl border border-rose-500/30 bg-rose-950/20 space-y-2">';
+          inner += '      <strong class="text-rose-400 block">❌ Error Típico:</strong>';
+          inner += '      <pre class="font-mono text-[11px] bg-black p-2 rounded text-rose-300">' + escapeHtml(cm.wrongCode) + '</pre>';
+          inner += '      <p class="text-rose-200">' + cm.wrongExplanation + '</p>';
+          inner += '    </div>';
+          inner += '    <div class="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-950/20 space-y-2">';
+          inner += '      <strong class="text-emerald-400 block">✅ Forma Correcta:</strong>';
+          inner += '      <pre class="font-mono text-[11px] bg-black p-2 rounded text-emerald-300">' + escapeHtml(cm.rightCode) + '</pre>';
+          inner += '      <p class="text-emerald-200">' + cm.rightExplanation + '</p>';
+          inner += '    </div>';
+          inner += '  </div>';
+          inner += '  <div class="p-2.5 rounded-xl border border-amber-500/30 bg-amber-950/20 text-xs text-amber-300 text-center font-bold">⭐ Regla de Oro: ' + cm.ruleOfThumb + '</div>';
+        });
+        inner += '</div>';
+      } else if (slide.type === 'classroom_challenge' && slide.content.challenge) {
+        const ch = slide.content.challenge;
+        inner += '<div class="space-y-4 max-w-xl mx-auto text-center">';
+        inner += '  <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 font-bold text-xs">⏱️ Tiempo: ' + ch.timeMinutes + ' minutos</span>';
+        inner += '  <div class="p-6 rounded-2xl border border-slate-800 bg-black space-y-2">';
+        inner += '    <h3 class="text-xl font-bold text-white">' + ch.question + '</h3>';
+        inner += '    <p class="text-xs text-slate-300">' + ch.instructions + '</p>';
+        inner += '  </div>';
+        inner += '  <div class="p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-xs text-emerald-300 text-left"><strong>✓ Respuesta Sugerida:</strong><p class="mt-1">' + ch.expectedAnswer + '</p></div>';
+        inner += '</div>';
+      } else if (slide.type === 'weekly_activity_bridge' && slide.content.activityBridge) {
+        const ab = slide.content.activityBridge;
+        inner += '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">';
+        inner += '  <div class="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-black text-[10px] uppercase">Actividad 1: Básica</span><h4 class="font-bold text-white">' + ab.act1Title + '</h4><p class="text-slate-400">' + ab.act1Desc + '</p></div>';
+        inner += '  <div class="p-4 rounded-2xl border border-blue-500/30 bg-blue-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-black text-[10px] uppercase">Actividad 2: Intermedia</span><h4 class="font-bold text-white">' + ab.act2Title + '</h4><p class="text-slate-400">' + ab.act2Desc + '</p></div>';
+        inner += '  <div class="p-4 rounded-2xl border border-purple-500/30 bg-purple-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-black text-[10px] uppercase">Actividad 3: Entregable</span><h4 class="font-bold text-white">' + ab.act3Title + '</h4><p class="text-slate-400">' + ab.act3Desc + '</p></div>';
+        inner += '</div>';
+      }
+
+      card.innerHTML = inner;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function nextSlide() {
+      if (currentIndex < slides.length - 1) {
+        currentIndex++;
+      } else {
+        currentIndex = 0;
+      }
+      selectedAnatomyIndex = 0;
+      selectedTopicIndex = 0;
+      showAllTopicsGrid = false;
+      renderSlide();
+    }
+
+    function prevSlide() {
+      if (currentIndex > 0) {
+        currentIndex--;
+      } else {
+        currentIndex = slides.length - 1;
+      }
+      selectedAnatomyIndex = 0;
+      selectedTopicIndex = 0;
+      showAllTopicsGrid = false;
+      renderSlide();
+    }
+
+    function selectAnatomy(idx) {
+      selectedAnatomyIndex = idx;
+      renderSlide();
+    }
+
+    function selectTopic(idx) {
+      selectedTopicIndex = idx;
+      renderSlide();
+    }
+
+    function toggleTopicGrid() {
+      showAllTopicsGrid = !showAllTopicsGrid;
+      renderSlide();
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === 'csharp' ? 'java' : 'csharp';
+      const btn = document.getElementById('btn-lang');
+      btn.textContent = currentLang === 'csharp' ? 'C# .NET' : 'Java 17';
+      btn.className = currentLang === 'csharp'
+        ? 'px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold transition-all'
+        : 'px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 text-xs font-black transition-all';
+      renderSlide();
+    }
+
+    function toggleTheme() {
+      isDark = !isDark;
+      document.body.className = isDark
+        ? 'bg-slate-950 text-slate-100 min-h-screen flex flex-col'
+        : 'bg-slate-100 text-slate-900 min-h-screen flex flex-col';
+      const card = document.getElementById('slide-card');
+      if (card) {
+        card.className = isDark
+          ? 'bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl min-h-[580px] flex flex-col justify-between transition-all'
+          : 'bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-xl min-h-[580px] flex flex-col justify-between transition-all';
+      }
+      renderSlide();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      }
+    });
+
+    renderSlide();
+  </script>
+</body>
+</html>

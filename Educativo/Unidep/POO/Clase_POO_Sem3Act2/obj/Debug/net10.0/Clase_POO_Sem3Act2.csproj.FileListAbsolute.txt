@@ -1,0 +1,15 @@
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\bin\Debug\net10.0\Clase_POO_Sem3Act2.exe
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\bin\Debug\net10.0\Clase_POO_Sem3Act2.deps.json
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\bin\Debug\net10.0\Clase_POO_Sem3Act2.runtimeconfig.json
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\bin\Debug\net10.0\Clase_POO_Sem3Act2.dll
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\bin\Debug\net10.0\Clase_POO_Sem3Act2.pdb
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\obj\Debug\net10.0\Clase_POO_Sem3Act2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\obj\Debug\net10.0\Clase_POO_Sem3Act2.AssemblyInfoInputs.cache
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\obj\Debug\net10.0\Clase_POO_Sem3Act2.AssemblyInfo.cs
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\obj\Debug\net10.0\Clase_POO_Sem3Act2.csproj.CoreCompileInputs.cache
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\obj\Debug\net10.0\Clase_POO_Sem3Act2.dll
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\obj\Debug\net10.0\refint\Clase_POO_Sem3Act2.dll
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\obj\Debug\net10.0\Clase_POO_Sem3Act2.pdb
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\obj\Debug\net10.0\Clase_POO_Sem3Act2.genruntimeconfig.cache
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\obj\Debug\net10.0\ref\Clase_POO_Sem3Act2.dll
+C:\Users\Salon Lego\source\repos\Clase_POO_Sem3Act2\obj\Debug\net10.0\Clase_PO.D209E054.Up2Date

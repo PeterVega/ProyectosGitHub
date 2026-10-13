@@ -1,0 +1,15 @@
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\obj\Debug\net10.0\Class_POO_Sem3Act3.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\obj\Debug\net10.0\Class_POO_Sem3Act3.AssemblyInfoInputs.cache
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\obj\Debug\net10.0\Class_POO_Sem3Act3.AssemblyInfo.cs
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\obj\Debug\net10.0\Class_POO_Sem3Act3.csproj.CoreCompileInputs.cache
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\bin\Debug\net10.0\Class_POO_Sem3Act3.exe
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\bin\Debug\net10.0\Class_POO_Sem3Act3.deps.json
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\bin\Debug\net10.0\Class_POO_Sem3Act3.runtimeconfig.json
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\bin\Debug\net10.0\Class_POO_Sem3Act3.dll
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\bin\Debug\net10.0\Class_POO_Sem3Act3.pdb
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\obj\Debug\net10.0\Class_POO_Sem3Act3.dll
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\obj\Debug\net10.0\refint\Class_POO_Sem3Act3.dll
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\obj\Debug\net10.0\Class_POO_Sem3Act3.pdb
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\obj\Debug\net10.0\Class_POO_Sem3Act3.genruntimeconfig.cache
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\obj\Debug\net10.0\ref\Class_POO_Sem3Act3.dll
+C:\Users\Salon Lego\source\repos\Class_POO_Sem3Act3\obj\Debug\net10.0\Class_PO.C3C8EEA7.Up2Date

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase 6: Arquitectura de Software, Persistencia y Cierre del Curso - UNIDEP - Universidad del Desarrollo Profesional</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    pre, code, .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .print-slide { page-break-after: always; break-after: page; border: 1px solid #cbd5e1; margin-bottom: 2rem; padding: 2rem; border-radius: 1rem; }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-400 selection:text-slate-950">
+
+  <!-- Top Navigation & Controls Bar -->
+  <header class="no-print bg-slate-900 border-b border-slate-800 px-4 py-3 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider">
+          UNIDEP - Universidad del Desarrollo Profesional OFFLINE
+        </span>
+        <div>
+          <h1 class="text-sm font-bold text-white line-clamp-1">Clase 6: Arquitectura de Software, Persistencia y Cierre del Curso</h1>
+          <p class="text-[11px] text-slate-400 font-mono">Semana 6 · Unidad 8 y Unidad 9</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span id="slide-indicator" class="text-xs font-mono font-bold px-3 py-1 rounded-lg bg-slate-800 border border-slate-700 text-amber-300">
+          1 / 10
+        </span>
+        <button onclick="toggleLang()" id="btn-lang" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold transition-all">
+          C# .NET
+        </button>
+        <button onclick="toggleTheme()" id="btn-theme" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700" title="Cambiar tema claro/oscuro">
+          🌓 Modo
+        </button>
+        <button onclick="window.print()" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700">
+          🖨️ Imprimir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Slide Canvas Container -->
+  <main class="no-print flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center">
+    <div id="slide-card" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl min-h-[580px] flex flex-col justify-between transition-all">
+      <!-- Dynamic slide content injected by JavaScript -->
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="mt-4 flex items-center justify-between">
+      <button onclick="prevSlide()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-all flex items-center gap-2">
+        ← Anterior
+      </button>
+
+      <div id="dots-container" class="flex items-center gap-1.5 overflow-x-auto max-w-md px-2 py-1">
+        <!-- Dots injected here -->
+      </div>
+
+      <button onclick="nextSlide()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all flex items-center gap-2 shadow-lg">
+        Siguiente →
+      </button>
+    </div>
+
+    <!-- Quick Help & Shortcuts -->
+    <div class="mt-4 text-center text-slate-500 text-[11px]">
+      💡 Usa las teclas <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">←</kbd> y <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">→</kbd> para navegar las diapositivas. Archivo 100% autónomo para uso sin internet.
+    </div>
+  </main>
+
+  <script>
+    const slides = [{"id":"c6-s1","slideNumber":1,"type":"cover","title":"Arquitectura de Software y Persistencia: El Cierre Maestro","subtitle":"Cómo organizar una aplicación real para que sea mantenible por equipos de 50 ingenieros","badge":"Semana 6 · Cátedra de Cierre","content":{"leadText":"Has dominado clases, encapsulamiento, herencia, polimorfismo y excepciones. Hoy veremos cómo unir todas las piezas en una arquitectura limpia.","bulletPoints":[{"icon":"🏗️","title":"Separación en Capas","desc":"Modelo (Datos) · Lógica de Negocio (Servicios) · Presentación (Consola / GUI)."},{"icon":"💾","title":"Persistencia de Datos (I/O)","desc":"Guardar y leer archivos en disco para que la información no desaparezca al apagar la computadora."},{"icon":"🎓","title":"Portafolio de Evidencias Completo","desc":"Consolidación de las 18 actividades prácticas desarrolladas a lo largo de las 6 semanas."}]},"speakerNotes":"Felicitar al grupo por llegar a la última semana. Mostrar cómo ahora son capaces de leer y entender código profesional en C# y Java."},{"id":"c6-s2","slideNumber":2,"type":"real_world_analogy","title":"El Problema de la Arquitectura: El Edificio con Tuberías Expuestas","subtitle":"¿Por qué no debes mezclar el cálculo de nómina con el botón que dibuja la pantalla?","badge":"Analogía Cotidiana","content":{"imageUrl":"/src/assets/images/persistence_stream_disk_1791519716297.jpg","imageCaption":"La memoria RAM es volátil; los objetos en ejecución se transmiten a través de Streams a almacenamiento permanente en disco (SSD)","analogyBox":{"title":"La Separación de Capas en un Rascacielos","analogy":"En un hotel de 5 estrellas, los huéspedes no entran a la sala de calderas para calentar su café, ni el chef sale a la recepción en medio del almuerzo a cambiar un foco de luz fundido. Tienes una capa de atención al cliente (Recepción/Presentación), una capa de servicio (Cocina/Lógica) y una capa de infraestructura física (Calderas/Persistencia).","moral":"Si mezclas la lógica matemática con la pantalla de consola, cuando quieras migrar a una app móvil tendrás que tirar todo el código a la basura."}},"speakerNotes":"Explicar el principio de Responsabilidad Única (SRP): una clase debe tener una sola razón para cambiar."},{"id":"c6-s3","slideNumber":3,"type":"topic_breakdown","title":"Módulo Temático 9A: Filosofía Defensiva y Control try-catch (U9.1 a U9.4)","subtitle":"Por qué no usar códigos de error, control de flujo anómalo, bloques múltiples y garantía con finally","badge":"Temario Oficial · Unidad 9 (Parte 1)","content":{"topicBreakdown":{"unitCode":"U9-A","unitTitle":"Manejo Formal de Excepciones y Flujo Defensivo","summary":"Los 4 fundamentos del blindaje de aplicaciones: propagación en el call stack, captura selectiva en cascada y liberación segura de recursos.","topics":[{"code":"U9.1","title":"Excepciones y Filosofía Defensiva","keyBadge":"Robustez de Software","whatItMeans":"Una excepción es un evento anómalo o error que ocurre mientras el programa se ejecuta (como dividir entre cero, archivo no encontrado o conexión perdida) y que rompe el flujo normal.","howToUse":"La programación defensiva sustituye los antiguos códigos numéricos de error (-1, 0, null) por objetos de excepción enriquecidos con mensajes y pila de llamadas.","appliedExample":{"scenario":"Retiro bancario sin fondos","csharpCode":"// C# .NET\nif (monto > Saldo)\n    throw new InvalidOperationException(\"Fondos insuficientes para la transacción.\");","javaCode":"// Java 17+\nif (monto > saldo)\n    throw new IllegalArgumentException(\"Fondos insuficientes.\");","visualAnalogyOrDiagram":"Airbag del auto: se dispara automáticamente en un choque para proteger al conductor."}},{"code":"U9.2","title":"Manejo de Excepciones en Java y C#","keyBadge":"Mecanismo de Control","whatItMeans":"Es la arquitectura de las máquinas virtuales (JVM y CLR) para capturar el error y trasladar la ejecución a una zona segura sin que la aplicación colapse ante el usuario.","howToUse":"Si un método lanza una excepción y nadie la captura, esta viaja hacia arriba en la pila de llamadas (call stack) hasta llegar al método main.","appliedExample":{"scenario":"Propagación de error desde el servicio hasta la pantalla","csharpCode":"// C# .NET\n// MetodoC() lanza -> MetodoB() propaga -> MetodoA() captura con try/catch","javaCode":"// Java 17+\n// metodoC() -> metodoB() -> metodoA()","visualAnalogyOrDiagram":"Alarma de incendios: suena en la oficina y se reporta al piso central de seguridad."}},{"code":"U9.3","title":"Sentencia try & catch (Múltiples Bloques)","keyBadge":"Captura Específica","whatItMeans":"El bloque \"try\" envuelve el código que podría fallar; el bloque \"catch\" contiene las instrucciones de rescate si ese fallo ocurre.","howToUse":"Puedes tener múltiples bloques catch. REGLA ESTRICTA: coloca siempre las excepciones más específicas arriba y la excepción general Exception al final.","appliedExample":{"scenario":"Conversión de texto a número con división","csharpCode":"// C# .NET\ntry {\n    int num = int.Parse(texto);\n    int res = 100 / num;\n} catch (FormatException ex) {\n    Console.WriteLine(\"Debes ingresar un número válido.\");\n} catch (DivideByZeroException ex) {\n    Console.WriteLine(\"No se puede dividir entre cero.\");\n}","javaCode":"// Java 17+\ntry {\n    int num = Integer.parseInt(texto);\n    int res = 100 / num;\n} catch (NumberFormatException e) {\n    System.out.println(\"Formato inválido\");\n} catch (ArithmeticException e) {\n    System.out.println(\"División entre cero\");\n}","visualAnalogyOrDiagram":"Red de seguridad para trapecistas: si fallas el salto, caes en la red suavemente."}},{"code":"U9.4","title":"Sentencia finally y Liberación de Recursos","keyBadge":"Garantía de Cierre","whatItMeans":"Es un bloque que se ejecuta SIEMPRE y sin excepción, tanto si todo salió bien como si ocurrió un error catastrófico. Es ideal para cerrar archivos, bases de datos o conexiones de red.","howToUse":"Escribe en el finally el cierre de recursos. En C# moderno se usa la sentencia \"using\" y en Java \"try-with-resources\" que automatizan esta limpieza.","appliedExample":{"scenario":"Cierre garantizado de un archivo en disco","csharpCode":"// C# .NET (con using automático)\nusing (StreamReader lector = new(\"datos.txt\")) {\n    string linea = lector.ReadLine();\n} // Se cierra automáticamente al salir","javaCode":"// Java 17+ (try-with-resources)\ntry (BufferedReader lector = new BufferedReader(new FileReader(\"datos.txt\"))) {\n    String linea = lector.readLine();\n} // Se cierra automáticamente","visualAnalogyOrDiagram":"Apagar las luces y cerrar con llave al salir del laboratorio, pase lo que pase."}}]}},"speakerNotes":"Explicar los 4 primeros temas de la Unidad 9: la filosofía defensiva, la pila de llamadas, la captura específica y el bloque finally."},{"id":"c6-s4","slideNumber":4,"type":"topic_breakdown","title":"Módulo Temático 9B: Categorías, Reglas de Oro y Excepciones Propias (U9.5 a P6.10)","subtitle":"Checked vs Unchecked, errores comunes del runtime, buenas prácticas y checklist del Producto Integrador","badge":"Temario Oficial · Unidad 9 (Parte 2)","content":{"topicBreakdown":{"unitCode":"U9-B","unitTitle":"Categorías de Excepciones, Reglas de Oro y Producto Integrador","summary":"Los 6 componentes finales: clasificación de excepciones, prohibición del catch vacío, excepciones personalizadas y checklist de entrega final.","topics":[{"code":"U9.5","title":"Categorías de Excepciones (Checked vs Unchecked)","keyBadge":"Jerarquía de Tipos","whatItMeans":"En Java, las \"Checked\" (heredan de Exception) obligan al programador a capturarlas con try-catch o declararlas con throws en tiempo de compilación. Las \"Unchecked\" (RuntimeException) son fallos de lógica (como dividir entre cero) que no exigen captura obligatoria. En C# todas son unchecked.","howToUse":"Usa excepciones verificadas (o validaciones previas) para fallos del entorno (red, archivos), y no uses try-catch para tapar errores de programación como índices fuera de rango.","appliedExample":{"scenario":"IOException (Checked en Java) vs NullPointerException (Unchecked)","csharpCode":"// C# .NET (Todas son desacopladas)\ntry { File.ReadAllText(\"cfg.json\"); } catch (FileNotFoundException) { }","javaCode":"// Java 17+\npublic void leerArchivo() throws IOException { // Declaración obligatoria\n    new FileReader(\"cfg.json\");\n}","visualAnalogyOrDiagram":"Inspección de aduana obligatoria (Checked) vs tropezar al caminar por descuido (Unchecked)."}},{"code":"U9.6","title":"Excepciones Comunes del Runtime","keyBadge":"Los Errores Clásicos","whatItMeans":"Los 4 errores que todo ingeniero encuentra a diario: NullReference/NullPointer (usar una variable que vale null), IndexOutOfRange (pedir el índice 10 de un arreglo de 5), FormatException (convertir \"hola\" a número) y ArithmeticException.","howToUse":"Aprende a leer el \"Stack Trace\" (la traza de la pila): te dice exactamente el nombre del archivo y el número de línea donde ocurrió la falla.","appliedExample":{"scenario":"Diagnóstico de NullReferenceException","csharpCode":"// C# .NET\nstring? nombre = null;\n// if (nombre.Length > 0) -> Falla con NullReference\nif (nombre != null && nombre.Length > 0) { /* Seguro */ }","javaCode":"// Java 17+\nString nombre = null;\nif (nombre != null && nombre.length() > 0) { /* Seguro */ }","visualAnalogyOrDiagram":"Placa de rayos X médica: te señala el hueso roto exacto en el cuerpo del programa."}},{"code":"U9.7","title":"Reglas de Oro para el Manejo de Excepciones","keyBadge":"Buenas Prácticas","whatItMeans":"Regla 1: NUNCA dejes un bloque catch vacío (esconder el error es el peor pecado). Regla 2: Captura solo lo que puedas solucionar. Regla 3: Si no lo puedes solucionar, regístralo (log) o relánzalo.","howToUse":"Evita: catch (Exception ex) { }. Usa: catch (Exception ex) { Logger.Error(ex); throw; } para preservar la información del problema.","appliedExample":{"scenario":"Registro profesional de error","csharpCode":"// C# .NET\ncatch (Exception ex) {\n    Console.Error.WriteLine($\"[ERROR CRÍTICO] {ex.Message}\");\n    throw; // Relanza la excepción conservando la traza original\n}","javaCode":"// Java 17+\ncatch (Exception e) {\n    System.err.println(\"[ERROR] \" + e.getMessage());\n    throw e;\n}","visualAnalogyOrDiagram":"Barril tóxico: no lo escondes debajo de la alfombra; lo señalizas y avisas a los bomberos."}},{"code":"U9.8","title":"Redefinición de Métodos y Cláusula throws","keyBadge":"Contrato en Herencia","whatItMeans":"Cuando una clase hija sobrescribe un método del padre, no puede declarar excepciones más amplias o generales de las que el padre ya había declarado.","howToUse":"En Java, si el padre declara throws IOException, la hija puede declarar FileNotFoundException (subclase) o no declarar ninguna, pero nunca throws Exception general.","appliedExample":{"scenario":"Sobrescritura segura en herencia","csharpCode":"// C# .NET: El contrato de la signatura virtual se respeta","javaCode":"// Java 17+\nclass Padre { void leer() throws IOException { } }\nclass Hija extends Padre {\n    @Override\n    void leer() throws FileNotFoundException { } // Válido: es más específica\n}","visualAnalogyOrDiagram":"Cláusula de garantía: una sucursal no puede dar menos garantías que la casa matriz."}},{"code":"U9.9","title":"Creando Excepciones Propias Personalizadas","keyBadge":"Excepciones del Dominio","whatItMeans":"Crear tus propias clases de error con nombres específicos del negocio (como SaldoInsuficienteException, ProductoAgotadoException) para que el código sea autodocumentado y claro.","howToUse":"Se crea una clase que herede de Exception (o ApplicationException/RuntimeException) y se le añade un constructor que reciba el mensaje descriptivo.","appliedExample":{"scenario":"Excepción del negocio bancario","csharpCode":"// C# .NET\npublic class SaldoInsuficienteException : Exception {\n    public double SaldoActual { get; }\n    public SaldoInsuficienteException(double saldo, string msg) : base(msg) {\n        SaldoActual = saldo;\n    }\n}","javaCode":"// Java 17+\npublic class SaldoInsuficienteException extends Exception {\n    public SaldoInsuficienteException(String msg) { super(msg); }\n}","visualAnalogyOrDiagram":"Etiqueta de diagnóstico especializada: no dice solo \"Falla de motor\", dice \"Bomba de inyección tapada\"."}},{"code":"P6.10","title":"Checklist de Entrega: Producto Integrador (Trabajo 5)","keyBadge":"Cierre de Asignatura","whatItMeans":"La verificación final de la solución de software que integra todo el contenido de Semanas 1 a 4 con el blindaje de excepciones de Semana 6.","howToUse":"Revisa: 1) Clases encapsuladas y limpias, 2) Herencia e interfaces polimórficas, 3) Menú por consola robusto, 4) Bloques try-catch en todas las entradas de usuario, y 5) Código libre de caídas.","appliedExample":{"scenario":"Demostración ante el docente titular","csharpCode":"// C# .NET: Sistema completamente blindado con menú, matrices, herencia y try/catch","javaCode":"// Java 17+: Compilación limpia sin advertencias y pruebas de consola exitosas","visualAnalogyOrDiagram":"Control de calidad final antes de lanzar un cohete al espacio."}}]}},"speakerNotes":"Explicar la diferencia entre Checked y Unchecked en Java, las reglas de oro para logging, cómo crear excepciones personalizadas y el checklist de entrega."},{"id":"c6-s5","slideNumber":5,"type":"core_concept_dual","title":"Concepto Clave: Bloques Try - Catch - Finally en C# y Java","subtitle":"Captura selectiva en cascada y garantía absoluta de liberación de recursos en finally","badge":"Control de Excepciones","content":{"codeComparison":{"concept":"Manejo defensivo con captura múltiple y bloque finally","csharpCode":"// C# .NET 8 (Try - Catch - Finally)\ntry\n{\n    Console.Write(\"Ingrese divisor: \");\n    int divisor = int.Parse(Console.ReadLine() ?? \"1\");\n    int resultado = 100 / divisor;\n    Console.WriteLine($\"Resultado exacto: {resultado}\");\n}\ncatch (DivideByZeroException ex)\n{\n    Console.WriteLine($\"⚠️ Error matemático: No se puede dividir entre cero ({ex.Message})\");\n}\ncatch (FormatException)\n{\n    Console.WriteLine(\"⚠️ Error de entrada: Ingrese un número entero válido.\");\n}\nfinally\n{\n    Console.WriteLine(\"🔒 Bloque finally: Garantía de cierre y recursos liberados.\");\n}","javaCode":"// Java JDK 17+ (Try - Catch - Finally)\ntry {\n    int divisor = Integer.parseInt(scanner.nextLine());\n    int resultado = 100 / divisor;\n    System.out.println(\"Resultado: \" + resultado);\n} catch (ArithmeticException ex) {\n    System.out.println(\"⚠️ Error matemático: \" + ex.getMessage());\n} catch (NumberFormatException ex) {\n    System.out.println(\"⚠️ Error de formato: Ingrese un entero válido.\");\n} finally {\n    System.out.println(\"🔒 Bloque finally ejecutado siempre.\");\n}","explanation":"El bloque \"finally\" se ejecuta SIEMPRE: tanto si todo salió bien como si ocurrió un error catastrófico. Es indispensable para cerrar archivos o conexiones a bases de datos."}},"speakerNotes":"Enfatizar que las excepciones específicas van arriba y la excepción genérica catch(Exception) va al final como último recurso."},{"id":"c6-s6","slideNumber":6,"type":"instruction_anatomy","title":"Anatomía de la Instrucción: Lanzamiento de una Excepción Propia","subtitle":"Desglose paso a paso de la creación y lanzamiento defensivo con \"throw new\"","badge":"⭐ Anatomía Visual de la Instrucción","content":{"instructionAnatomy":{"instructionStatement":"if (monto > Saldo) throw new SaldoInsuficienteException(\"Fondos insuficientes\");","statementContext":"La forma profesional de decir: \"Esta operación viola la regla de negocio; aborto de inmediato antes de corromper los datos\".","parts":[{"token":"if (monto > Saldo)","name":"1. Cláusula de Guardia","role":"Condición preventiva que evalúa si la regla de negocio ha sido vulnerada.","everydayAnalogy":"El guardia de seguridad en el cajero verificando si tu saldo cubre el retiro.","color":"amber"},{"token":"throw","name":"2. Palabra Clave \"throw\"","role":"Orden imperativa al runtime: \"¡Detén la ejecución normal de esta función y detona una alarma estructurada!\".","everydayAnalogy":"Tirar de la palanca roja de emergencia en una estación de tren.","color":"rose"},{"token":"new","name":"3. Instanciador \"new\"","role":"Crea en el Heap un objeto real que contendrá la traza de error y el mensaje explicativo.","everydayAnalogy":"Llenar el reporte oficial del incidente con fecha, hora y causa.","color":"emerald"},{"token":"SaldoInsuficienteException(...)","name":"4. Clase de Excepción Propia","role":"Un tipo de dato especializado que hereda de Exception para describir el problema exacto del dominio.","everydayAnalogy":"El código específico de alarma: no es \"error general\", es \"falta de fondos\".","color":"purple"},{"token":"\"Fondos insuficientes\"","name":"5. Mensaje Amigable para el Log","role":"Texto descriptivo que viajará encapsulado en la propiedad .Message para informar al usuario o al log.","everydayAnalogy":"El mensaje que aparece en la pantalla del cajero: \"Saldo insuficiente para esta transacción\".","color":"cyan"}],"takeaway":"Lanzar excepciones deliberadas con \"throw\" es la marca de un desarrollador senior: proteges tu código de trabajar con basura."}},"speakerNotes":"Mostrar que una excepción personalizada en C# hereda de Exception: public class SaldoInsuficienteException : Exception { public SaldoInsuficienteException(string m) : base(m) {} }."},{"id":"c6-s7","slideNumber":7,"type":"simple_example","title":"Ejemplo Sencillo en Vivo: Cajero Automático con Excepción Propia","subtitle":"Código de 25 líneas en C# listo para compilar, probar y blindar","badge":"Código Ejecutable","content":{"simpleExample":{"domainScenario":"Retiro bancario que lanza SaldoInsuficienteException cuando el monto supera el saldo disponible.","csharpSnippet":"using System;\n\n// 1. Excepción Personalizada del Negocio\npublic class SaldoInsuficienteException : Exception\n{\n    public SaldoInsuficienteException(string mensaje) : base(mensaje) { }\n}\n\npublic class Cuenta\n{\n    public double Saldo { get; private set; } = 300;\n\n    public void Retirar(double monto)\n    {\n        if (monto > Saldo)\n            throw new SaldoInsuficienteException($\"No puedes retirar ${monto}. Saldo disponible: ${Saldo}\");\n\n        Saldo -= monto;\n        Console.WriteLine($\"Retiro exitoso de ${monto}. Nuevo saldo: ${Saldo}\");\n    }\n}\n\nclass Program\n{\n    static void Main()\n    {\n        Cuenta c = new Cuenta();\n        try\n        {\n            c.Retirar(100); // Exitoso\n            c.Retirar(500); // ¡Detonará la excepción controlada!\n        }\n        catch (SaldoInsuficienteException ex)\n        {\n            Console.WriteLine($\"🛡️ Alarma Atrapada: {ex.Message}\");\n        }\n        finally\n        {\n            Console.WriteLine(\"🏧 Transacción finalizada. Gracias por usar nuestro cajero.\");\n        }\n    }\n}","javaSnippet":"// Equivalente en Java 17+ heredando de Exception y usando try-catch","consoleOutput":"Retiro exitoso de $100. Nuevo saldo: $200\n🛡️ Alarma Atrapada: No puedes retirar $500. Saldo disponible: $200\n🏧 Transacción finalizada. Gracias por usar nuestro cajero.","stepByStepExplanation":["El primer retiro de $100 se procesa normalmente.","El segundo retiro de $500 detona throw new SaldoInsuficienteException(...).","El programa NO colapsa; el bloque catch captura el mensaje y el bloque finally imprime el mensaje de despedida."]}},"speakerNotes":"Hacer notar a los estudiantes que el programa terminó con código de salida 0 (sin estrellarse en la pantalla azul de la muerte)."},{"id":"c6-s8","slideNumber":8,"type":"common_mistakes","title":"El Antipatrón del \"Catch Vacío\" (Tragarse los Errores)","subtitle":"El peor pecado de programación: atrapar un fallo y quedarse callado","badge":"Peligro Crítico","content":{"commonMistakes":[{"wrongCode":"// ❌ EL PECADO MORTAL: CATCH VACÍO\ntry {\n    GuardarEnBaseDatos();\n} catch (Exception) {\n    // ¡Vacío! No hace nada...\n}","wrongExplanation":"Tragarse la excepción silencia el error. La base de datos falló, los datos no se guardaron, pero el sistema continúa fingiendo que todo está bien. Los usuarios perderán información sin enterarse.","rightCode":"// ✅ CAPTURA RESPONSABLE\ntry {\n    GuardarEnBaseDatos();\n} catch (Exception ex) {\n    RegistrarEnLogDeErrores(ex);\n    NotificarAlUsuario(\"No se pudo completar la operación. Intente más tarde.\");\n}","rightExplanation":"Siempre registra el fallo (log) y ofrece una alternativa elegante al usuario.","ruleOfThumb":"Nunca escribas un bloque catch vacío; si lo atrapas, hazte responsable de él."},{"wrongCode":"// ❌ ERROR: Usar excepciones para control de flujo\ntry {\n    while (true) { procesar(items[i++]); }\n} catch (IndexOutOfRangeException) { /* fin de lista */ }","wrongExplanation":"Las excepciones son para situaciones ANÓMALAS. Crear y lanzar una excepción cuesta cientos de ciclos de CPU comparado con una simple condición if (i < items.Length).","rightCode":"// ✅ CONTROL DE FLUJO NATURAL\nfor (int i = 0; i < items.Length; i++) {\n    procesar(items[i]);\n}","rightExplanation":"Usa bucles e ifs para el flujo ordinario; reserva try-catch para eventos inesperados.","ruleOfThumb":"No uses excepciones para controlar el flujo normal del programa."}]},"speakerNotes":"Explicar anécdotas reales de software que falló durante meses en producción porque alguien puso un catch vacío."},{"id":"c6-s9","slideNumber":9,"type":"classroom_challenge","title":"Reto de Blindaje: Creación de CapacidadExcedidaException","subtitle":"Diseña una excepción propia y pruébala en 5 minutos","badge":"Reto de Aula (5 min)","content":{"challenge":{"timeMinutes":5,"question":"Diseña CapacidadExcedidaException para el Producto Integrador","instructions":"Escribe la clase de excepción y la cláusula de guardia que verifique si la carga supera la capacidad máxima del vehículo.","expectedAnswer":"public class CapacidadExcedidaException : Exception { public CapacidadExcedidaException(string m) : base(m) {} } if (cargaKg > CapacidadMaxima) throw new CapacidadExcedidaException(\"Carga sobrepasa el límite permitido\");"}},"speakerNotes":"Dar 5 minutos y verificar que la excepción herede de Exception correctamente."},{"id":"c6-s10","slideNumber":10,"type":"weekly_activity_bridge","title":"Semana 6: Entrega y Sustentación del Producto Integrador (15%)","subtitle":"El hito final que corona el curso de Programación Orientada a Objetos","badge":"★ TRABAJO 5 · CIERRE DE CURSO","content":{"activityBridge":{"act1Title":"Actividad 1 (Básica): Validación Defensiva con Try-Catch","act1Desc":"Blindaje de entradas de usuario por consola impidiendo caídas por formatos inválidos.","act2Title":"Actividad 2 (Intermedia): Excepciones de Dominio en Capa de Negocio","act2Desc":"Integración de excepciones personalizadas para proteger las reglas de negocio del sistema.","act3Title":"Trabajo 5: Entrega y Sustentación del Producto Integrador (15%)","act3Desc":"Presentación ejecutiva del software completo (U1 a U9) con código en GitHub, arquitectura limpia y blindaje total ante excepciones."}},"speakerNotes":"Agradecer a los estudiantes su dedicación a lo largo de las 6 semanas. Recordar que las actas de calificación se entregan conforme al calendario oficial de UNIDEP."}];
+    let currentIndex = 0;
+    let currentLang = 'csharp';
+    let isDark = true;
+    let selectedAnatomyIndex = 0;
+    let selectedTopicIndex = 0;
+    let showAllTopicsGrid = false;
+
+    function renderSlide() {
+      const slide = slides[currentIndex];
+      const card = document.getElementById('slide-card');
+      const indicator = document.getElementById('slide-indicator');
+      indicator.textContent = (currentIndex + 1) + ' / ' + slides.length;
+
+      // Update dots
+      const dotsContainer = document.getElementById('dots-container');
+      dotsContainer.innerHTML = '';
+      slides.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.className = idx === currentIndex
+          ? 'w-6 h-2 rounded-full bg-amber-500 transition-all'
+          : 'w-2 h-2 rounded-full bg-slate-700 hover:bg-slate-500 transition-all';
+        dot.onclick = () => { currentIndex = idx; selectedAnatomyIndex = 0; renderSlide(); };
+        dotsContainer.appendChild(dot);
+      });
+
+      let inner = '';
+
+      // Slide Top Meta
+      inner += '<div class="flex items-center justify-between border-b ' + (isDark ? 'border-slate-800 pb-4 mb-6' : 'border-slate-200 pb-4 mb-6') + '">';
+      inner += '  <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500 text-slate-950">' + slide.badge + '</span>';
+      inner += '  <span class="text-xs font-mono text-slate-400">' + slide.type.toUpperCase().replace(/_/g, ' ') + '</span>';
+      inner += '</div>';
+
+      // Title & Subtitle
+      inner += '<div class="mb-6">';
+      inner += '  <h2 class="text-2xl sm:text-3xl font-black leading-tight text-white mb-2">' + slide.title + '</h2>';
+      inner += '  <p class="text-sm sm:text-base ' + (isDark ? 'text-slate-300' : 'text-slate-600') + '">' + slide.subtitle + '</p>';
+      inner += '</div>';
+
+      // Slide Content based on type
+      if (slide.type === 'cover') {
+        inner += '<div class="space-y-6">';
+        inner += '  <p class="text-base sm:text-lg text-amber-300 font-semibold">' + (slide.content.leadText || '') + '</p>';
+        if (slide.content.bulletPoints) {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">';
+          slide.content.bulletPoints.forEach(bp => {
+            inner += '    <div class="p-4 rounded-2xl border ' + (isDark ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200 text-slate-900') + '">';
+            inner += '      <div class="text-2xl mb-2">' + (bp.icon || '📌') + '</div>';
+            inner += '      <h3 class="font-bold text-sm mb-1">' + bp.title + '</h3>';
+            inner += '      <p class="text-xs text-slate-400">' + bp.desc + '</p>';
+            inner += '    </div>';
+          });
+          inner += '  </div>';
+        }
+        inner += '</div>';
+      } else if (slide.type === 'real_world_analogy') {
+        inner += '<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">';
+        if (slide.content.imageUrl) {
+          inner += '  <div class="rounded-2xl overflow-hidden border border-slate-800 bg-black">';
+          inner += '    <img src="' + slide.content.imageUrl + '" alt="' + slide.title + '" class="w-full max-h-72 object-contain mx-auto" onerror="this.style.display=\'none\'">';
+          if (slide.content.imageCaption) {
+            inner += '    <p class="p-2 text-center text-xs text-slate-400 italic">' + slide.content.imageCaption + '</p>';
+          }
+          inner += '  </div>';
+        }
+        if (slide.content.analogyBox) {
+          inner += '  <div class="p-5 rounded-2xl border bg-amber-950/20 border-amber-500/30 text-slate-200 space-y-3">';
+          inner += '    <h3 class="text-xs uppercase font-black tracking-wider text-amber-400">💡 ' + slide.content.analogyBox.title + '</h3>';
+          inner += '    <p class="text-xs sm:text-sm leading-relaxed">' + slide.content.analogyBox.analogy + '</p>';
+          inner += '    <div class="pt-2 border-t border-amber-500/20 text-xs font-bold text-amber-300">📌 Conclusión: ' + slide.content.analogyBox.moral + '</div>';
+          inner += '  </div>';
+        }
+        inner += '</div>';
+      } else if (slide.type === 'topic_breakdown' && slide.content.topicBreakdown) {
+        const tb = slide.content.topicBreakdown;
+        const total = tb.topics.length;
+        const activeTopic = tb.topics[selectedTopicIndex] || tb.topics[0];
+        const code = currentLang === 'csharp' ? activeTopic.appliedExample.csharpCode : activeTopic.appliedExample.javaCode;
+
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="p-3.5 rounded-2xl border ' + (isDark ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200 text-slate-900') + ' flex items-center justify-between flex-wrap gap-2">';
+        inner += '    <div class="flex items-center gap-2">';
+        inner += '      <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-xs font-mono">' + tb.unitCode + '</span>';
+        inner += '      <div><h3 class="font-black text-sm leading-tight">' + tb.unitTitle + '</h3><p class="text-[11px] text-slate-400">' + tb.summary + '</p></div>';
+        inner += '    </div>';
+        inner += '    <div class="flex items-center gap-2">';
+        inner += '      <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">' + total + ' temas</span>';
+        inner += '      <button onclick="toggleTopicGrid()" class="text-xs font-bold px-2.5 py-1 rounded-lg border ' + (showAllTopicsGrid ? 'bg-amber-500 text-slate-950 border-amber-400' : 'bg-slate-800 border-slate-700 text-amber-300 hover:bg-slate-700') + '">' + (showAllTopicsGrid ? 'Vista Enfocada' : 'Ver Todos en Cuadrícula') + '</button>';
+        inner += '    </div>';
+        inner += '  </div>';
+
+        if (!showAllTopicsGrid) {
+          inner += '  <div class="flex items-center gap-1.5 overflow-x-auto pb-1">';
+          tb.topics.forEach((t, tIdx) => {
+            const isSel = tIdx === selectedTopicIndex;
+            inner += '    <button onclick="selectTopic(' + tIdx + ')" class="px-3 py-1.5 rounded-xl text-xs font-bold border shrink-0 transition-all ' + (isSel ? 'bg-amber-500 text-slate-950 border-amber-400 font-black' : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700') + '">';
+            inner += '      <span class="font-mono bg-black/20 px-1.5 py-0.5 rounded text-[10px]">' + t.code + '</span> ' + t.title;
+            inner += '    </button>';
+          });
+          inner += '  </div>';
+
+          inner += '  <div class="p-5 rounded-2xl border ' + (isDark ? 'bg-slate-950/90 border-slate-800' : 'bg-white border-slate-200 text-slate-900') + '">';
+          inner += '    <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">';
+          inner += '      <div class="flex items-center gap-2">';
+          inner += '        <span class="font-mono font-black text-xs px-2 py-0.5 rounded bg-amber-500 text-slate-950">' + activeTopic.code + '</span>';
+          inner += '        <h4 class="text-base font-black">' + activeTopic.title + '</h4>';
+          if (activeTopic.keyBadge) {
+            inner += '        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">' + activeTopic.keyBadge + '</span>';
+          }
+          inner += '      </div>';
+          inner += '      <span class="text-xs font-mono text-slate-400">Tema ' + (selectedTopicIndex + 1) + ' de ' + total + '</span>';
+          inner += '    </div>';
+
+          inner += '    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">';
+          inner += '      <div class="space-y-3">';
+          inner += '        <div class="p-3.5 rounded-xl border ' + (isDark ? 'bg-blue-950/20 border-blue-500/30' : 'bg-blue-50 border-blue-200') + '">';
+          inner += '          <div class="text-blue-400 font-black text-xs uppercase mb-1">📖 ¿Qué Significa? (Definición Sencilla)</div>';
+          inner += '          <p class="text-xs leading-relaxed ' + (isDark ? 'text-slate-200' : 'text-slate-800') + '">' + activeTopic.whatItMeans + '</p>';
+          inner += '        </div>';
+          inner += '        <div class="p-3.5 rounded-xl border ' + (isDark ? 'bg-amber-950/20 border-amber-500/30' : 'bg-amber-50 border-amber-200') + '">';
+          inner += '          <div class="text-amber-400 font-black text-xs uppercase mb-1">⚙️ ¿Cómo se Utiliza? (Regla Técnica)</div>';
+          inner += '          <p class="text-xs leading-relaxed ' + (isDark ? 'text-slate-200' : 'text-slate-800') + '">' + activeTopic.howToUse + '</p>';
+          inner += '        </div>';
+          if (activeTopic.appliedExample.visualAnalogyOrDiagram) {
+            inner += '        <div class="p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-300 text-xs font-mono">';
+            inner += '          🖼️ ' + activeTopic.appliedExample.visualAnalogyOrDiagram;
+            inner += '        </div>';
+          }
+          inner += '      </div>';
+
+          inner += '      <div class="space-y-2">';
+          inner += '        <div class="p-2.5 rounded-xl border border-slate-800 bg-slate-900/90 text-xs text-slate-300 flex items-center justify-between">';
+          inner += '          <span>💡 <strong>Escenario:</strong> ' + activeTopic.appliedExample.scenario + '</span>';
+          inner += '          <span class="text-amber-400 text-[10px] font-bold font-mono">' + (currentLang === 'csharp' ? 'C# .NET' : 'Java 17') + '</span>';
+          inner += '        </div>';
+          inner += '        <pre class="p-3 rounded-xl bg-black border border-slate-800 font-mono text-xs text-emerald-300 whitespace-pre overflow-x-auto leading-relaxed">' + escapeHtml(code) + '</pre>';
+          inner += '      </div>';
+          inner += '    </div>';
+
+          inner += '    <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">';
+          inner += '      <button onclick="selectTopic(' + (selectedTopicIndex > 0 ? selectedTopicIndex - 1 : total - 1) + ')" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold">← Tema Anterior</button>';
+          inner += '      <button onclick="selectTopic(' + (selectedTopicIndex < total - 1 ? selectedTopicIndex + 1 : 0) + ')" class="px-3 py-1.5 rounded-lg border border-amber-500/50 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-xs">Siguiente Tema →</button>';
+          inner += '    </div>';
+          inner += '  </div>';
+        } else {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[460px] overflow-y-auto pr-1">';
+          tb.topics.forEach(t => {
+            const cd = currentLang === 'csharp' ? t.appliedExample.csharpCode : t.appliedExample.javaCode;
+            inner += '    <div class="p-3.5 rounded-2xl border ' + (isDark ? 'bg-slate-950/80 border-slate-800' : 'bg-white border-slate-200') + ' space-y-2">';
+            inner += '      <div class="flex items-center justify-between gap-1">';
+            inner += '        <span class="font-mono font-bold text-xs px-2 py-0.5 rounded bg-amber-500 text-slate-950">' + t.code + '</span>';
+            inner += '        <h4 class="font-bold text-xs text-white">' + t.title + '</h4>';
+            inner += '      </div>';
+            inner += '      <p class="text-[11px] text-slate-300"><strong>Qué significa:</strong> ' + t.whatItMeans + '</p>';
+            inner += '      <p class="text-[11px] text-amber-300/90"><strong>Cómo se usa:</strong> ' + t.howToUse + '</p>';
+            inner += '      <pre class="p-2 rounded-xl bg-black border border-slate-800 font-mono text-[10px] text-emerald-400 whitespace-pre overflow-x-auto">' + escapeHtml(cd) + '</pre>';
+            inner += '    </div>';
+          });
+          inner += '  </div>';
+        }
+
+        inner += '</div>';
+      } else if (slide.type === 'core_concept_dual' && slide.content.codeComparison) {
+        const comp = slide.content.codeComparison;
+        const code = currentLang === 'csharp' ? comp.csharpCode : comp.javaCode;
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="flex items-center justify-between text-xs text-amber-400 font-bold">';
+        inner += '    <span>' + comp.concept + '</span>';
+        inner += '    <span class="font-mono text-slate-400">' + (currentLang === 'csharp' ? 'Program.cs (.NET 8)' : 'Main.java (Java 17)') + '</span>';
+        inner += '  </div>';
+        inner += '  <pre class="p-4 rounded-2xl bg-black border border-slate-800 font-mono text-xs sm:text-sm text-slate-100 overflow-x-auto whitespace-pre leading-relaxed">' + escapeHtml(code) + '</pre>';
+        inner += '  <p class="p-3 rounded-xl border border-slate-800 bg-slate-950 text-xs sm:text-sm text-slate-300">💡 ' + comp.explanation + '</p>';
+        inner += '</div>';
+      } else if (slide.type === 'instruction_anatomy' && slide.content.instructionAnatomy) {
+        const anat = slide.content.instructionAnatomy;
+        const activePart = anat.parts[selectedAnatomyIndex] || anat.parts[0];
+        inner += '<div class="space-y-5">';
+        inner += '  <div class="p-4 rounded-2xl bg-black border border-slate-800 font-mono text-sm sm:text-base text-emerald-300 font-bold overflow-x-auto whitespace-pre">' + escapeHtml(anat.instructionStatement) + '</div>';
+        inner += '  <div class="flex flex-wrap gap-2">';
+        anat.parts.forEach((p, pIdx) => {
+          const isAct = pIdx === selectedAnatomyIndex;
+          inner += '    <button onclick="selectAnatomy(' + pIdx + ')" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ' + (isAct ? 'bg-amber-500 text-slate-950 border-amber-400' : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700') + '">';
+          inner += '      <span class="font-mono">' + p.token + '</span> · ' + p.name;
+          inner += '    </button>';
+        });
+        inner += '  </div>';
+        inner += '  <div class="p-5 rounded-2xl border border-amber-500/30 bg-amber-950/20 text-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">';
+        inner += '    <div><strong class="text-amber-400 block mb-1">⚙️ ¿Qué hace en la memoria / procesador?</strong><p>' + activePart.role + '</p></div>';
+        inner += '    <div><strong class="text-emerald-400 block mb-1">💡 Analogía sencilla para cualquiera:</strong><p>"' + activePart.everydayAnalogy + '"</p></div>';
+        inner += '  </div>';
+        inner += '</div>';
+      } else if (slide.type === 'simple_example' && slide.content.simpleExample) {
+        const ex = slide.content.simpleExample;
+        const code = currentLang === 'csharp' ? ex.csharpSnippet : ex.javaSnippet;
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="p-3 rounded-xl border border-amber-500/30 bg-amber-950/20 text-xs sm:text-sm text-amber-300">🎯 <strong>Escenario Cotidiano:</strong> ' + ex.domainScenario + '</div>';
+        inner += '  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">';
+        inner += '    <div><pre class="p-4 rounded-xl bg-black border border-slate-800 font-mono text-xs text-slate-100 overflow-x-auto max-h-64 leading-relaxed">' + escapeHtml(code) + '</pre></div>';
+        inner += '    <div class="space-y-3">';
+        inner += '      <pre class="p-3 rounded-xl bg-black border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto whitespace-pre">' + escapeHtml(ex.consoleOutput) + '</pre>';
+        inner += '      <div class="space-y-1">';
+        ex.stepByStepExplanation.forEach(st => {
+          inner += '        <div class="text-xs text-slate-300 flex items-start gap-1.5"><span>✓</span><span>' + st + '</span></div>';
+        });
+        inner += '      </div>';
+        inner += '    </div>';
+        inner += '  </div>';
+        inner += '</div>';
+      } else if (slide.type === 'common_mistakes' && slide.content.commonMistakes) {
+        inner += '<div class="space-y-4">';
+        slide.content.commonMistakes.forEach(cm => {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">';
+          inner += '    <div class="p-4 rounded-2xl border border-rose-500/30 bg-rose-950/20 space-y-2">';
+          inner += '      <strong class="text-rose-400 block">❌ Error Típico:</strong>';
+          inner += '      <pre class="font-mono text-[11px] bg-black p-2 rounded text-rose-300">' + escapeHtml(cm.wrongCode) + '</pre>';
+          inner += '      <p class="text-rose-200">' + cm.wrongExplanation + '</p>';
+          inner += '    </div>';
+          inner += '    <div class="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-950/20 space-y-2">';
+          inner += '      <strong class="text-emerald-400 block">✅ Forma Correcta:</strong>';
+          inner += '      <pre class="font-mono text-[11px] bg-black p-2 rounded text-emerald-300">' + escapeHtml(cm.rightCode) + '</pre>';
+          inner += '      <p class="text-emerald-200">' + cm.rightExplanation + '</p>';
+          inner += '    </div>';
+          inner += '  </div>';
+          inner += '  <div class="p-2.5 rounded-xl border border-amber-500/30 bg-amber-950/20 text-xs text-amber-300 text-center font-bold">⭐ Regla de Oro: ' + cm.ruleOfThumb + '</div>';
+        });
+        inner += '</div>';
+      } else if (slide.type === 'classroom_challenge' && slide.content.challenge) {
+        const ch = slide.content.challenge;
+        inner += '<div class="space-y-4 max-w-xl mx-auto text-center">';
+        inner += '  <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 font-bold text-xs">⏱️ Tiempo: ' + ch.timeMinutes + ' minutos</span>';
+        inner += '  <div class="p-6 rounded-2xl border border-slate-800 bg-black space-y-2">';
+        inner += '    <h3 class="text-xl font-bold text-white">' + ch.question + '</h3>';
+        inner += '    <p class="text-xs text-slate-300">' + ch.instructions + '</p>';
+        inner += '  </div>';
+        inner += '  <div class="p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-xs text-emerald-300 text-left"><strong>✓ Respuesta Sugerida:</strong><p class="mt-1">' + ch.expectedAnswer + '</p></div>';
+        inner += '</div>';
+      } else if (slide.type === 'weekly_activity_bridge' && slide.content.activityBridge) {
+        const ab = slide.content.activityBridge;
+        inner += '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">';
+        inner += '  <div class="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-black text-[10px] uppercase">Actividad 1: Básica</span><h4 class="font-bold text-white">' + ab.act1Title + '</h4><p class="text-slate-400">' + ab.act1Desc + '</p></div>';
+        inner += '  <div class="p-4 rounded-2xl border border-blue-500/30 bg-blue-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-black text-[10px] uppercase">Actividad 2: Intermedia</span><h4 class="font-bold text-white">' + ab.act2Title + '</h4><p class="text-slate-400">' + ab.act2Desc + '</p></div>';
+        inner += '  <div class="p-4 rounded-2xl border border-purple-500/30 bg-purple-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-black text-[10px] uppercase">Actividad 3: Entregable</span><h4 class="font-bold text-white">' + ab.act3Title + '</h4><p class="text-slate-400">' + ab.act3Desc + '</p></div>';
+        inner += '</div>';
+      }
+
+      card.innerHTML = inner;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function nextSlide() {
+      if (currentIndex < slides.length - 1) {
+        currentIndex++;
+      } else {
+        currentIndex = 0;
+      }
+      selectedAnatomyIndex = 0;
+      selectedTopicIndex = 0;
+      showAllTopicsGrid = false;
+      renderSlide();
+    }
+
+    function prevSlide() {
+      if (currentIndex > 0) {
+        currentIndex--;
+      } else {
+        currentIndex = slides.length - 1;
+      }
+      selectedAnatomyIndex = 0;
+      selectedTopicIndex = 0;
+      showAllTopicsGrid = false;
+      renderSlide();
+    }
+
+    function selectAnatomy(idx) {
+      selectedAnatomyIndex = idx;
+      renderSlide();
+    }
+
+    function selectTopic(idx) {
+      selectedTopicIndex = idx;
+      renderSlide();
+    }
+
+    function toggleTopicGrid() {
+      showAllTopicsGrid = !showAllTopicsGrid;
+      renderSlide();
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === 'csharp' ? 'java' : 'csharp';
+      const btn = document.getElementById('btn-lang');
+      btn.textContent = currentLang === 'csharp' ? 'C# .NET' : 'Java 17';
+      btn.className = currentLang === 'csharp'
+        ? 'px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold transition-all'
+        : 'px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 text-xs font-black transition-all';
+      renderSlide();
+    }
+
+    function toggleTheme() {
+      isDark = !isDark;
+      document.body.className = isDark
+        ? 'bg-slate-950 text-slate-100 min-h-screen flex flex-col'
+        : 'bg-slate-100 text-slate-900 min-h-screen flex flex-col';
+      const card = document.getElementById('slide-card');
+      if (card) {
+        card.className = isDark
+          ? 'bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl min-h-[580px] flex flex-col justify-between transition-all'
+          : 'bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-xl min-h-[580px] flex flex-col justify-between transition-all';
+      }
+      renderSlide();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      }
+    });
+
+    renderSlide();
+  </script>
+</body>
+</html>

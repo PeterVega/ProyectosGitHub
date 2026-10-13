@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Salon Lego\\source\\repos\\Clase_POO_Sem1Act1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7C36FD59-AF33-4A9D-8C12-EB08280E0A6D}|Clase_POO_Sem1Act1.csproj|c:\\users\\salon lego\\source\\repos\\clase_poo_sem1act1\\consultamedica.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C36FD59-AF33-4A9D-8C12-EB08280E0A6D}|Clase_POO_Sem1Act1.csproj|solutionrelative:consultamedica.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C36FD59-AF33-4A9D-8C12-EB08280E0A6D}|Clase_POO_Sem1Act1.csproj|c:\\users\\salon lego\\source\\repos\\clase_poo_sem1act1\\paciente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C36FD59-AF33-4A9D-8C12-EB08280E0A6D}|Clase_POO_Sem1Act1.csproj|solutionrelative:paciente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C36FD59-AF33-4A9D-8C12-EB08280E0A6D}|Clase_POO_Sem1Act1.csproj|c:\\users\\salon lego\\source\\repos\\clase_poo_sem1act1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C36FD59-AF33-4A9D-8C12-EB08280E0A6D}|Clase_POO_Sem1Act1.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ConsultaMedica.cs",
+              "DocumentMoniker": "C:\\Users\\Salon Lego\\source\\repos\\Clase_POO_Sem1Act1\\ConsultaMedica.cs",
+              "RelativeDocumentMoniker": "ConsultaMedica.cs",
+              "ToolTip": "C:\\Users\\Salon Lego\\source\\repos\\Clase_POO_Sem1Act1\\ConsultaMedica.cs",
+              "RelativeToolTip": "ConsultaMedica.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAYwCIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-12T04:18:44.256Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Paciente.cs",
+              "DocumentMoniker": "C:\\Users\\Salon Lego\\source\\repos\\Clase_POO_Sem1Act1\\Paciente.cs",
+              "RelativeDocumentMoniker": "Paciente.cs",
+              "ToolTip": "C:\\Users\\Salon Lego\\source\\repos\\Clase_POO_Sem1Act1\\Paciente.cs",
+              "RelativeToolTip": "Paciente.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEQAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-12T04:18:05.908Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Salon Lego\\source\\repos\\Clase_POO_Sem1Act1\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Salon Lego\\source\\repos\\Clase_POO_Sem1Act1\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-12T03:20:48.627Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

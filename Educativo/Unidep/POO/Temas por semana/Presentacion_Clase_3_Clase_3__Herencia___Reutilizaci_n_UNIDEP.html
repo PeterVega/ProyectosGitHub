@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase 3: Herencia y Jerarquías de Software - UNIDEP - Universidad del Desarrollo Profesional</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    pre, code, .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .print-slide { page-break-after: always; break-after: page; border: 1px solid #cbd5e1; margin-bottom: 2rem; padding: 2rem; border-radius: 1rem; }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-400 selection:text-slate-950">
+
+  <!-- Top Navigation & Controls Bar -->
+  <header class="no-print bg-slate-900 border-b border-slate-800 px-4 py-3 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider">
+          UNIDEP - Universidad del Desarrollo Profesional OFFLINE
+        </span>
+        <div>
+          <h1 class="text-sm font-bold text-white line-clamp-1">Clase 3: Herencia y Jerarquías de Software</h1>
+          <p class="text-[11px] text-slate-400 font-mono">Semana 3 · Unidad 4</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span id="slide-indicator" class="text-xs font-mono font-bold px-3 py-1 rounded-lg bg-slate-800 border border-slate-700 text-amber-300">
+          1 / 10
+        </span>
+        <button onclick="toggleLang()" id="btn-lang" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold transition-all">
+          C# .NET
+        </button>
+        <button onclick="toggleTheme()" id="btn-theme" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700" title="Cambiar tema claro/oscuro">
+          🌓 Modo
+        </button>
+        <button onclick="window.print()" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700">
+          🖨️ Imprimir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Slide Canvas Container -->
+  <main class="no-print flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center">
+    <div id="slide-card" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl min-h-[580px] flex flex-col justify-between transition-all">
+      <!-- Dynamic slide content injected by JavaScript -->
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="mt-4 flex items-center justify-between">
+      <button onclick="prevSlide()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-all flex items-center gap-2">
+        ← Anterior
+      </button>
+
+      <div id="dots-container" class="flex items-center gap-1.5 overflow-x-auto max-w-md px-2 py-1">
+        <!-- Dots injected here -->
+      </div>
+
+      <button onclick="nextSlide()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all flex items-center gap-2 shadow-lg">
+        Siguiente →
+      </button>
+    </div>
+
+    <!-- Quick Help & Shortcuts -->
+    <div class="mt-4 text-center text-slate-500 text-[11px]">
+      💡 Usa las teclas <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">←</kbd> y <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">→</kbd> para navegar las diapositivas. Archivo 100% autónomo para uso sin internet.
+    </div>
+  </main>
+
+  <script>
+    const slides = [{"id":"c3-s1","slideNumber":1,"type":"cover","title":"Herencia: El Arte de no Repetir Código (Principio DRY)","subtitle":"Jerarquías de clases donde los hijos heredan la riqueza de los padres y agregan su propia especialización","badge":"Semana 3 · Cátedra Oficial","content":{"leadText":"Hoy eliminaremos el código duplicado creando árboles genealógicos de software elegantes y escalables.","bulletPoints":[{"icon":"🧬","title":"La Relación \"Es-Un\"","desc":"Un Médico \"es una\" Persona; un Auto \"es un\" Vehículo; un Desarrollador \"es un\" Empleado."},{"icon":"🔁","title":"Reutilización Máxima (DRY)","desc":"Escribe una sola vez el Nombre y la Cédula en la clase Padre, y todas las clases Hijas lo tendrán gratis."},{"icon":"⚡","title":"Sobrescritura Polimórfica","desc":"Palabras clave: virtual y override en C#; @Override en Java."}]},"speakerNotes":"Preguntar al grupo: \"¿Quién ha copiado y pegado código 10 veces en diferentes archivos?\". Explicar que la herencia es la solución profesional para no duplicar jamás."},{"id":"c3-s2","slideNumber":2,"type":"real_world_analogy","title":"El Problema del Mundo Real: El Catálogo de Vehículos Duplicado","subtitle":"La diferencia entre copiar planos y especializar modelos","badge":"Analogía Cotidiana","content":{"imageUrl":"/src/assets/images/inheritance_hierarchy_1791519185121.jpg","imageCaption":"La clase base Entity provee los cimientos (ID, Nombre); las clases hijas heredan y agregan herramientas especializadas.","analogyBox":{"title":"El ADN Biológico y los Modelos de Automóviles","analogy":"Una fábrica no inventa la rueda, los frenos y el volante desde cero cada vez que diseña una camioneta o un convertible. Tienen una plataforma base (\"Vehículo\") que ya incluye motor, chasis y frenos. La Camioneta hereda todo eso y solo agrega \"Caja de carga 4x4\"; el Deportivo hereda lo mismo y solo agrega \"Modo turbo\".","moral":"Herencia significa: \"No reinventes la rueda; hereda lo que funciona y especializa lo que cambia\"."}},"speakerNotes":"Usar la analogía del chasis de automóvil. Dejar claro que la clase hija tiene acceso a lo protegido (protected/public) del padre pero no a lo estrictamente privado."},{"id":"c3-s3","slideNumber":3,"type":"topic_breakdown","title":"Módulo Temático 5: Sentencias de Control (U5.1 a U5.5)","subtitle":"Bifurcaciones if-else, switch-case y ciclos iterativos for, while y do-while","badge":"Temario Oficial · Unidad 5","content":{"topicBreakdown":{"unitCode":"U5","unitTitle":"Estructuras de Control de Flujo Algorítmico","summary":"Las 5 sentencias clave para bifurcar la ejecución de programas y automatizar repeticiones con condiciones de parada.","topics":[{"code":"U5.1","title":"Sentencia if-else","keyBadge":"Bifurcación Condicional","whatItMeans":"Es la encrucijada del código: evalúa una condición booleana. Si es verdadera ejecuta un camino; si es falsa ejecuta el bloque else.","howToUse":"Se usa para validar condiciones de negocio. Para múltiples casos excluyentes se encadenan con \"else if\". Mantén las condiciones simples para evitar anidamientos profundos.","appliedExample":{"scenario":"Semáforo de límite de velocidad","csharpCode":"// C# .NET\nif (velocidad > 100) {\n    Console.WriteLine(\"Multa grave\");\n} else if (velocidad > 80) {\n    Console.WriteLine(\"Advertencia\");\n} else {\n    Console.WriteLine(\"Velocidad normal\");\n}","javaCode":"// Java 17+\nif (velocidad > 100) {\n    System.out.println(\"Multa grave\");\n} else {\n    System.out.println(\"Velocidad normal\");\n}","visualAnalogyOrDiagram":"Bifurcación en la carretera: tomas la salida A o sigues por la ruta B según el letrero."}},{"code":"U5.2","title":"Sentencia switch-case","keyBadge":"Selección Múltiple","whatItMeans":"Compara una sola variable contra una lista de valores posibles fijos (constantes). Es mucho más rápido y ordenado que escribir 10 \"else if\" seguidos.","howToUse":"En sintaxis tradicional cada \"case\" termina con \"break;\". En C# y Java modernos existen las expresiones switch con flecha \"=>\" que devuelven un valor directamente sin break.","appliedExample":{"scenario":"Menú de opciones de cajero","csharpCode":"// C# .NET (Switch moderno)\nstring accion = opcion switch {\n    1 => \"Consultar saldo\",\n    2 => \"Depositar efectivo\",\n    3 => \"Retirar dinero\",\n    _ => \"Opción no válida\"\n};","javaCode":"// Java 17+ (Switch moderno)\nString accion = switch (opcion) {\n    case 1 -> \"Consultar saldo\";\n    case 2 -> \"Depositar\";\n    default -> \"No válida\";\n};","visualAnalogyOrDiagram":"Botones del elevador: presionas el piso 3 y te lleva directo sin pasar por cada piso intermedio."}},{"code":"U5.3","title":"Ciclo for","keyBadge":"Iteración de Conteo","whatItMeans":"Es el bucle ideal cuando sabes de antemano exactamente cuántas veces quieres repetir algo (por ejemplo, recorrer 10 alumnos o los elementos de un arreglo).","howToUse":"Se estructura en 3 partes: inicialización del contador (int i = 0), condición de parada (i < limite) e incremento (i++).","appliedExample":{"scenario":"Cálculo del total de ventas del día","csharpCode":"// C# .NET\ndouble suma = 0;\nfor (int i = 0; i < ventas.Length; i++) {\n    suma += ventas[i];\n}","javaCode":"// Java 17+\ndouble suma = 0;\nfor (int i = 0; i < ventas.length; i++) {\n    suma += ventas[i];\n}","visualAnalogyOrDiagram":"Cuenta vueltas de pista atlética: vuelta 1, vuelta 2... hasta completar las 5 vueltas."}},{"code":"U5.4","title":"Ciclo while","keyBadge":"Condición de Entrada","whatItMeans":"Repite un bloque de código mientras una condición siga siendo verdadera. Si la condición es falsa desde el principio, el bucle NO se ejecuta ni una sola vez.","howToUse":"Se usa cuando no sabes cuántas veces se repetirá el ciclo (ej. leer un archivo hasta que termine o esperar a que el usuario escriba \"salir\").","appliedExample":{"scenario":"Simulación de descarga de batería","csharpCode":"// C# .NET\nwhile (bateria > 5) {\n    ConsumirEnergia();\n    bateria -= 2; // Asegurar que avance hacia la condición de fin\n}","javaCode":"// Java 17+\nwhile (bateria > 5) {\n    consumirEnergia();\n    bateria -= 2;\n}","visualAnalogyOrDiagram":"Torniquete del metro: mientras la tarjeta tenga saldo, te deja seguir pasando."}},{"code":"U5.5","title":"Ciclo do-while","keyBadge":"Garantía Mínima","whatItMeans":"Es idéntico al while, pero con una diferencia vital: la condición se comprueba AL FINAL. Por lo tanto, garantiza que el código se ejecutará al menos una vez obligatoriamente.","howToUse":"Es la estructura predilecta para menús interactivos por consola donde primero debes mostrar las opciones y luego preguntar si desea repetir.","appliedExample":{"scenario":"Menú interactivo de opciones","csharpCode":"// C# .NET\nint opcion;\ndo {\n    MostrarMenu();\n    opcion = int.Parse(Console.ReadLine() ?? \"0\");\n} while (opcion != 9); // Sale al presionar 9","javaCode":"// Java 17+\ndo {\n    mostrarMenu();\n    opcion = scanner.nextInt();\n} while (opcion != 9);","visualAnalogyOrDiagram":"Probar un bocado de comida: primero lo pruebas, y luego decides si te sirves más."}}]}},"speakerNotes":"Explicar las 5 sentencias de control: el if-else, el switch moderno, y la diferencia vital entre while (precondición) y do-while (al menos una ejecución garantizada)."},{"id":"c3-s4","slideNumber":4,"type":"topic_breakdown","title":"Módulo Temático 6: Arreglos y Matrices (U6.1 a U6.6)","subtitle":"Declaración, reserva con new, matrices multidimensionales, redimensión y copiado en memoria","badge":"Temario Oficial · Unidad 6","content":{"topicBreakdown":{"unitCode":"U6","unitTitle":"Arreglos Unidimensionales y Multidimensionales","summary":"Los 6 fundamentos de gestión de colecciones contiguas en memoria Heap, índices con base cero y prevención de desbordamientos.","topics":[{"code":"U6.1","title":"Declaración de Arreglos","keyBadge":"Sintaxis en Stack","whatItMeans":"Es avisarle al compilador que una variable guardará una colección contigua de datos del mismo tipo, en lugar de un solo valor.","howToUse":"Se escribe tipo[] nombre (ej. int[] numeros; o string[] nombres;). En esta fase la variable vive en el Stack y aún vale null; todavía no contiene elementos.","appliedExample":{"scenario":"Declaración de lista de calificaciones","csharpCode":"// C# .NET\ndouble[] calificaciones; // Variable declarada (apunta a null)","javaCode":"// Java 17+\ndouble[] calificaciones;","visualAnalogyOrDiagram":"Etiqueta en una gaveta vacía: dice \"Aquí irán zapatos\", pero la gaveta aún no existe."}},{"code":"U6.2","title":"Creación de Arreglos (con new)","keyBadge":"Reserva en Heap","whatItMeans":"Es cuando la máquina virtual reserva un bloque de memoria física continua de tamaño fijo en el Heap para guardar los elementos.","howToUse":"Se usa el operador new con el tamaño entre corchetes: new int[5];. Los índices comienzan siempre en 0 y terminan en tamaño - 1.","appliedExample":{"scenario":"Reserva para 5 calificaciones","csharpCode":"// C# .NET\ncalificaciones = new double[5]; // Espacios de memoria indexados [0..4]","javaCode":"// Java 17+\ncalificaciones = new double[5];","visualAnalogyOrDiagram":"Caja de 5 compartimentos numerados del 0 al 4 construida físicamente."}},{"code":"U6.3","title":"Inicialización de Arreglos","keyBadge":"Llenado de Datos","whatItMeans":"Asignar los valores iniciales a cada posición del arreglo, ya sea uno por uno con su índice o todos juntos en una sola línea (inline).","howToUse":"Sintaxis compacta: int[] primos = { 2, 3, 5, 7, 11 };. Los valores se asignan en orden posicional.","appliedExample":{"scenario":"Días laborables de la semana","csharpCode":"// C# .NET\nstring[] dias = { \"Lunes\", \"Martes\", \"Miércoles\", \"Jueves\", \"Viernes\" };\nConsole.WriteLine(dias[0]); // \"Lunes\"","javaCode":"// Java 17+\nString[] dias = { \"Lunes\", \"Martes\", \"Miércoles\", \"Jueves\", \"Viernes\" };\nSystem.out.println(dias[0]);","visualAnalogyOrDiagram":"Llenar los compartimentos numerados con sus respectivos objetos."}},{"code":"U6.4","title":"Arreglos Multidimensionales (Matrices)","keyBadge":"Cuadrículas 2D","whatItMeans":"Son arreglos con dos o más dimensiones (filas y columnas), ideales para modelar tablas de datos, tableros de juego o imágenes con píxeles.","howToUse":"En C# existen matrices rectangulares [filas, cols] y arreglos escalonados [][]. En Java son siempre arreglos de arreglos tipo[][]. Se recorren con bucles for anidados.","appliedExample":{"scenario":"Tablero de 3x3 para juego de gato (Tres en línea)","csharpCode":"// C# .NET (Matriz 2D rectangular)\nchar[,] tablero = new char[3, 3];\ntablero[0, 0] = 'X'; // Fila 0, Columna 0","javaCode":"// Java 17+ (Matriz 2D)\nchar[][] tablero = new char[3][3];\ntablero[0][0] = 'X';","visualAnalogyOrDiagram":"Hoja de cálculo de Excel: coordenadas (fila, columna) para ubicar cada celda."}},{"code":"U6.5","title":"Redimensión de Arreglos","keyBadge":"Inmutabilidad de Tamaño","whatItMeans":"Los arreglos estándar tienen tamaño fijo e inalterable en memoria. \"Redimensionar\" en realidad significa crear un arreglo nuevo más grande y copiar los elementos viejos al nuevo.","howToUse":"En C# se usa Array.Resize(ref miArreglo, nuevoTam);. En Java se usa Arrays.copyOf(original, nuevoTam).","appliedExample":{"scenario":"Expandir la capacidad de una lista de 3 a 5 elementos","csharpCode":"// C# .NET\nint[] datos = { 10, 20, 30 };\nArray.Resize(ref datos, 5); // Crea nuevo array y copia los 3 viejos","javaCode":"// Java 17+\nint[] datos = { 10, 20, 30 };\ndatos = java.util.Arrays.copyOf(datos, 5);","visualAnalogyOrDiagram":"Mudanza a una casa más grande: compras otra casa y trasladas todos tus muebles."}},{"code":"U6.6","title":"Copiado de Arreglos","keyBadge":"Copia por Valor vs Referencia","whatItMeans":"Hacer \"arregloB = arregloA\" NO copia los datos, solo copia la dirección de memoria (ambos quedan apuntando a la misma caja). Para tener dos copias independientes debes duplicar los elementos.","howToUse":"En C# usa Array.Copy(origen, destino, longitud). En Java usa System.arraycopy(...) o el método .clone().","appliedExample":{"scenario":"Crear un respaldo de seguridad de datos","csharpCode":"// C# .NET (Copia independiente en memoria)\nint[] original = { 1, 2, 3 };\nint[] respaldo = new int[original.Length];\nArray.Copy(original, respaldo, original.Length);","javaCode":"// Java 17+\nint[] original = { 1, 2, 3 };\nint[] respaldo = original.clone();","visualAnalogyOrDiagram":"Fotocopia de un documento: escribir en la copia no mancha el original."}}]}},"speakerNotes":"Explicar los 6 temas de arreglos: desde la reserva de memoria con new tipo[tam] hasta las matrices 2D [,] y la diferencia entre copiar referencias y copiar valores."},{"id":"c3-s5","slideNumber":5,"type":"core_concept_dual","title":"Concepto Clave: Herencia y Constructor Base en C# y Java","subtitle":"Cómo declarar la relación de herencia y reenviar parámetros al padre","badge":"Sintaxis de Herencia","content":{"codeComparison":{"concept":"Clase Padre Empleado y Clase Hija Desarrollador","csharpCode":"// C# .NET 8 (Se usa el símbolo \":\" y \"base\")\npublic class Empleado\n{\n    public string Nombre { get; set; }\n    public Empleado(string nombre) => Nombre = nombre;\n\n    public virtual void Trabajar() => Console.WriteLine($\"{Nombre} realiza labores generales.\");\n}\n\npublic class Desarrollador : Empleado\n{\n    public string Lenguaje { get; set; }\n    // Reenvío al constructor base\n    public Desarrollador(string nombre, string lenguaje) : base(nombre)\n    {\n        Lenguaje = lenguaje;\n    }\n\n    public override void Trabajar() => Console.WriteLine($\"{Nombre} programa código en {Lenguaje}.\");\n}","javaCode":"// Java (Se usa \"extends\" y \"super\")\npublic class Empleado {\n    protected String nombre;\n    public Empleado(String nombre) { this.nombre = nombre; }\n\n    public void trabajar() {\n        System.out.println(nombre + \" realiza labores generales.\");\n    }\n}\n\npublic class Desarrollador extends Empleado {\n    private String lenguaje;\n    public Desarrollador(String nombre, String lenguaje) {\n        super(nombre); // Reenvío al padre\n        this.lenguaje = lenguaje;\n    }\n\n    @Override\n    public void trabajar() {\n        System.out.println(nombre + \" programa código en \" + lenguaje);\n    }\n}","explanation":"En C# se usa \":\" y \"base(...)\"; en Java se usa \"extends\" y \"super(...)\". En C# el padre debe marcar el método con \"virtual\" y el hijo con \"override\"."}},"speakerNotes":"Subrayar la importancia de \": base(nombre)\" en C# y \"super(nombre)\" en Java. El padre debe nacer antes de que el hijo pueda existir."},{"id":"c3-s6","slideNumber":6,"type":"instruction_anatomy","title":"Anatomía de la Instrucción: Declaración de Herencia y Constructor Base","subtitle":"Desglose detallado de la sintaxis de herencia en C#","badge":"⭐ Anatomía Visual de la Instrucción","content":{"instructionAnatomy":{"instructionStatement":"public class Medico : Persona { public Medico(string n, string esp) : base(n) { Especialidad = esp; } }","statementContext":"Esta línea establece la filiación completa entre la clase derivada y su clase base, asegurando la inicialización correcta.","parts":[{"token":"class Medico","name":"1. Subclase / Clase Hija","role":"Declara el nuevo tipo especializado que heredará los atributos del padre.","everydayAnalogy":"El hijo que nace en una familia.","color":"purple"},{"token":":","name":"2. Operador de Herencia (:)","role":"En C# indica: \"Esta clase hereda de...\". En Java se sustituye por la palabra \"extends\".","everydayAnalogy":"La rama del árbol genealógico que une al hijo con el padre.","color":"amber"},{"token":"Persona","name":"3. Superclase / Clase Padre","role":"La clase base que contiene los datos comunes a todos los seres humanos (Nombre, Cédula).","everydayAnalogy":"El padre que aporta los cimientos genéticos.","color":"blue"},{"token":"public Medico(string n, string esp)","name":"4. Constructor del Hijo","role":"Recibe tanto los datos necesarios para el padre como los específicos del hijo.","everydayAnalogy":"El formulario de ingreso con datos generales y de especialidad médica.","color":"emerald"},{"token":": base(n)","name":"5. Delegación al Constructor Base","role":"Pasa inmediatamente el parámetro \"n\" al constructor de Persona para que el padre se inicialice primero.","everydayAnalogy":"Pasarle el pasaporte a la oficina central para que te identifique.","color":"rose"},{"token":"{ Especialidad = esp; }","name":"6. Inicialización Especializada","role":"Guarda únicamente los atributos nuevos y únicos de la subclase Médica.","everydayAnalogy":"Ponerte la bata y el estetoscopio que solo los médicos usan.","color":"cyan"}],"takeaway":"La clase hija nunca necesita volver a declarar \"public string Nombre\"; ya lo heredó del padre con cero esfuerzo."}},"speakerNotes":"Explicar que en la memoria RAM, un objeto Médico contiene dentro de sí la porción de Persona y la porción de Médico de manera continua."},{"id":"c3-s7","slideNumber":7,"type":"simple_example","title":"Ejemplo Práctico en Vivo: Sistema de Cuentas Bancarias","subtitle":"Cuenta base con saldo, y CuentaAhorro con tasa de interés","badge":"Código Ejecutable","content":{"simpleExample":{"domainScenario":"Heredar de CuentaBancaria para crear una CuentaAhorro que pague intereses mensuales.","csharpSnippet":"using System;\n\npublic class Cuenta\n{\n    public string Numero { get; set; }\n    public double Saldo { get; protected set; }\n\n    public Cuenta(string num, double saldoInicial)\n    {\n        Numero = num;\n        Saldo = saldoInicial;\n    }\n\n    public virtual void Depositar(double monto)\n    {\n        Saldo += monto;\n        Console.WriteLine($\"Depósito exitoso en {Numero}. Saldo: ${Saldo}\");\n    }\n}\n\n// Subclase especializada\npublic class CuentaAhorro : Cuenta\n{\n    public double TasaInteres { get; set; }\n\n    public CuentaAhorro(string num, double saldo, double tasa) : base(num, saldo)\n    {\n        TasaInteres = tasa;\n    }\n\n    public void AplicarInteres()\n    {\n        double interes = Saldo * TasaInteres;\n        Depositar(interes);\n        Console.WriteLine($\"🎉 Interés acreditado: +${interes}\");\n    }\n}\n\nclass Program\n{\n    static void Main()\n    {\n        CuentaAhorro ahorro = new CuentaAhorro(\"AH-101\", 1000, 0.05);\n        ahorro.Depositar(200);   // Método heredado de Cuenta\n        ahorro.AplicarInteres(); // Método propio de CuentaAhorro\n    }\n}","javaSnippet":"// Equivalente en Java usando extends y super(...)","consoleOutput":"Depósito exitoso en AH-101. Saldo: $1200\nDepósito exitoso en AH-101. Saldo: $1260\n🎉 Interés acreditado: +$60","stepByStepExplanation":["CuentaAhorro heredó la propiedad Saldo y el método Depositar sin escribir una sola línea duplicada.","Agregó su propia propiedad TasaInteres y su método AplicarInteres."]}},"speakerNotes":"Mostrar cómo CuentaAhorro puede llamar a Depositar(...) internamente desde AplicarInteres()."},{"id":"c3-s8","slideNumber":8,"type":"common_mistakes","title":"Errores Típicos: La Herencia Forzada que Rompe la Lógica","subtitle":"El error de usar herencia solo por pereza en vez de relación conceptual genuina","badge":"Antipatrón de Diseño","content":{"commonMistakes":[{"wrongCode":"// ❌ ANTIPATRÓN: \"HERENCIA FORZADA\"\npublic class Cuadrado : Rectangulo { ... }\n// Un cuadrado viola el comportamiento del rectángulo si cambias alto y ancho por separado.","wrongExplanation":"No uses herencia solo para ahorrarte escribir 3 variables. Debe existir una relación genuina \"Es-Un\". Si la relación es \"Tiene-Un\", debes usar composición.","rightCode":"// ✅ PRINCIPIO LISKOV (LSP)\n// Si Auto \"TIENE UN\" Motor, no hagas \"class Auto : Motor\".\n// Haz:\npublic class Auto {\n    private Motor _motor; // Composición\n}","rightExplanation":"Pregúntate siempre: \"¿B es realmente un A en el mundo real, o B solo CONTIENE a un A?\". Un auto TIENE un motor, no ES un motor.","ruleOfThumb":"Relación \"Es-Un\" = Herencia. Relación \"Tiene-Un\" = Composición."}]},"speakerNotes":"Esta distinción entre herencia y composición es una de las preguntas fijas en entrevistas técnicas de arquitectura de software."},{"id":"c3-s9","slideNumber":9,"type":"classroom_challenge","title":"Reto en Aula: Árbol Genealógico de un Videojuego","subtitle":"Diseña la jerarquía de personajes en 5 minutos","badge":"Reto de Aula (5 min)","content":{"challenge":{"timeMinutes":5,"question":"¿Qué clase Padre modelarías para un juego con Guerreros, Magos y Arqueros?","instructions":"Define la clase Base Personaje con 3 atributos comunes y 2 subclases hijas que agreguen 1 atributo único cada una.","expectedAnswer":"Padre: Personaje (Nombre, PuntosVida, Nivel). Hijas: Guerrero (ArmaduraPesada), Mago (ManaMagico)."}},"speakerNotes":"Dejar que el grupo proponga los atributos. Es una dinámica muy divertida que despierta gran interés."},{"id":"c3-s10","slideNumber":10,"type":"weekly_activity_bridge","title":"Entregables de la Semana 3 en la Plataforma","subtitle":"Jerarquías de empleados y cálculo polimórfico de nómina","badge":"Semana 3 · Entregables","content":{"activityBridge":{"act1Title":"Actividad 1 (Básica): Jerarquía Empleado y Gerente","act1Desc":"Herencia simple en C# con cálculo de sueldo base y bono de gerencia.","act2Title":"Actividad 2 (Intermedia): Vendedores con Comisión Dinámica","act2Desc":"Subclase Vendedor que calcula comisiones sobre metas mensuales alcanzadas.","act3Title":"Actividad 3 (Avanzada): Sistema Integral de Nómina y RRHH","act3Desc":"Entregable oficial evaluado con validación de horas extra y deducciones fiscales (15%)."}},"speakerNotes":"Recordar que las soluciones comentadas de la Semana 3 están en la sección Actividades."}];
+    let currentIndex = 0;
+    let currentLang = 'csharp';
+    let isDark = true;
+    let selectedAnatomyIndex = 0;
+    let selectedTopicIndex = 0;
+    let showAllTopicsGrid = false;
+
+    function renderSlide() {
+      const slide = slides[currentIndex];
+      const card = document.getElementById('slide-card');
+      const indicator = document.getElementById('slide-indicator');
+      indicator.textContent = (currentIndex + 1) + ' / ' + slides.length;
+
+      // Update dots
+      const dotsContainer = document.getElementById('dots-container');
+      dotsContainer.innerHTML = '';
+      slides.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.className = idx === currentIndex
+          ? 'w-6 h-2 rounded-full bg-amber-500 transition-all'
+          : 'w-2 h-2 rounded-full bg-slate-700 hover:bg-slate-500 transition-all';
+        dot.onclick = () => { currentIndex = idx; selectedAnatomyIndex = 0; renderSlide(); };
+        dotsContainer.appendChild(dot);
+      });
+
+      let inner = '';
+
+      // Slide Top Meta
+      inner += '<div class="flex items-center justify-between border-b ' + (isDark ? 'border-slate-800 pb-4 mb-6' : 'border-slate-200 pb-4 mb-6') + '">';
+      inner += '  <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500 text-slate-950">' + slide.badge + '</span>';
+      inner += '  <span class="text-xs font-mono text-slate-400">' + slide.type.toUpperCase().replace(/_/g, ' ') + '</span>';
+      inner += '</div>';
+
+      // Title & Subtitle
+      inner += '<div class="mb-6">';
+      inner += '  <h2 class="text-2xl sm:text-3xl font-black leading-tight text-white mb-2">' + slide.title + '</h2>';
+      inner += '  <p class="text-sm sm:text-base ' + (isDark ? 'text-slate-300' : 'text-slate-600') + '">' + slide.subtitle + '</p>';
+      inner += '</div>';
+
+      // Slide Content based on type
+      if (slide.type === 'cover') {
+        inner += '<div class="space-y-6">';
+        inner += '  <p class="text-base sm:text-lg text-amber-300 font-semibold">' + (slide.content.leadText || '') + '</p>';
+        if (slide.content.bulletPoints) {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">';
+          slide.content.bulletPoints.forEach(bp => {
+            inner += '    <div class="p-4 rounded-2xl border ' + (isDark ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200 text-slate-900') + '">';
+            inner += '      <div class="text-2xl mb-2">' + (bp.icon || '📌') + '</div>';
+            inner += '      <h3 class="font-bold text-sm mb-1">' + bp.title + '</h3>';
+            inner += '      <p class="text-xs text-slate-400">' + bp.desc + '</p>';
+            inner += '    </div>';
+          });
+          inner += '  </div>';
+        }
+        inner += '</div>';
+      } else if (slide.type === 'real_world_analogy') {
+        inner += '<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">';
+        if (slide.content.imageUrl) {
+          inner += '  <div class="rounded-2xl overflow-hidden border border-slate-800 bg-black">';
+          inner += '    <img src="' + slide.content.imageUrl + '" alt="' + slide.title + '" class="w-full max-h-72 object-contain mx-auto" onerror="this.style.display=\'none\'">';
+          if (slide.content.imageCaption) {
+            inner += '    <p class="p-2 text-center text-xs text-slate-400 italic">' + slide.content.imageCaption + '</p>';
+          }
+          inner += '  </div>';
+        }
+        if (slide.content.analogyBox) {
+          inner += '  <div class="p-5 rounded-2xl border bg-amber-950/20 border-amber-500/30 text-slate-200 space-y-3">';
+          inner += '    <h3 class="text-xs uppercase font-black tracking-wider text-amber-400">💡 ' + slide.content.analogyBox.title + '</h3>';
+          inner += '    <p class="text-xs sm:text-sm leading-relaxed">' + slide.content.analogyBox.analogy + '</p>';
+          inner += '    <div class="pt-2 border-t border-amber-500/20 text-xs font-bold text-amber-300">📌 Conclusión: ' + slide.content.analogyBox.moral + '</div>';
+          inner += '  </div>';
+        }
+        inner += '</div>';
+      } else if (slide.type === 'topic_breakdown' && slide.content.topicBreakdown) {
+        const tb = slide.content.topicBreakdown;
+        const total = tb.topics.length;
+        const activeTopic = tb.topics[selectedTopicIndex] || tb.topics[0];
+        const code = currentLang === 'csharp' ? activeTopic.appliedExample.csharpCode : activeTopic.appliedExample.javaCode;
+
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="p-3.5 rounded-2xl border ' + (isDark ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200 text-slate-900') + ' flex items-center justify-between flex-wrap gap-2">';
+        inner += '    <div class="flex items-center gap-2">';
+        inner += '      <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-xs font-mono">' + tb.unitCode + '</span>';
+        inner += '      <div><h3 class="font-black text-sm leading-tight">' + tb.unitTitle + '</h3><p class="text-[11px] text-slate-400">' + tb.summary + '</p></div>';
+        inner += '    </div>';
+        inner += '    <div class="flex items-center gap-2">';
+        inner += '      <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">' + total + ' temas</span>';
+        inner += '      <button onclick="toggleTopicGrid()" class="text-xs font-bold px-2.5 py-1 rounded-lg border ' + (showAllTopicsGrid ? 'bg-amber-500 text-slate-950 border-amber-400' : 'bg-slate-800 border-slate-700 text-amber-300 hover:bg-slate-700') + '">' + (showAllTopicsGrid ? 'Vista Enfocada' : 'Ver Todos en Cuadrícula') + '</button>';
+        inner += '    </div>';
+        inner += '  </div>';
+
+        if (!showAllTopicsGrid) {
+          inner += '  <div class="flex items-center gap-1.5 overflow-x-auto pb-1">';
+          tb.topics.forEach((t, tIdx) => {
+            const isSel = tIdx === selectedTopicIndex;
+            inner += '    <button onclick="selectTopic(' + tIdx + ')" class="px-3 py-1.5 rounded-xl text-xs font-bold border shrink-0 transition-all ' + (isSel ? 'bg-amber-500 text-slate-950 border-amber-400 font-black' : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700') + '">';
+            inner += '      <span class="font-mono bg-black/20 px-1.5 py-0.5 rounded text-[10px]">' + t.code + '</span> ' + t.title;
+            inner += '    </button>';
+          });
+          inner += '  </div>';
+
+          inner += '  <div class="p-5 rounded-2xl border ' + (isDark ? 'bg-slate-950/90 border-slate-800' : 'bg-white border-slate-200 text-slate-900') + '">';
+          inner += '    <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">';
+          inner += '      <div class="flex items-center gap-2">';
+          inner += '        <span class="font-mono font-black text-xs px-2 py-0.5 rounded bg-amber-500 text-slate-950">' + activeTopic.code + '</span>';
+          inner += '        <h4 class="text-base font-black">' + activeTopic.title + '</h4>';
+          if (activeTopic.keyBadge) {
+            inner += '        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">' + activeTopic.keyBadge + '</span>';
+          }
+          inner += '      </div>';
+          inner += '      <span class="text-xs font-mono text-slate-400">Tema ' + (selectedTopicIndex + 1) + ' de ' + total + '</span>';
+          inner += '    </div>';
+
+          inner += '    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">';
+          inner += '      <div class="space-y-3">';
+          inner += '        <div class="p-3.5 rounded-xl border ' + (isDark ? 'bg-blue-950/20 border-blue-500/30' : 'bg-blue-50 border-blue-200') + '">';
+          inner += '          <div class="text-blue-400 font-black text-xs uppercase mb-1">📖 ¿Qué Significa? (Definición Sencilla)</div>';
+          inner += '          <p class="text-xs leading-relaxed ' + (isDark ? 'text-slate-200' : 'text-slate-800') + '">' + activeTopic.whatItMeans + '</p>';
+          inner += '        </div>';
+          inner += '        <div class="p-3.5 rounded-xl border ' + (isDark ? 'bg-amber-950/20 border-amber-500/30' : 'bg-amber-50 border-amber-200') + '">';
+          inner += '          <div class="text-amber-400 font-black text-xs uppercase mb-1">⚙️ ¿Cómo se Utiliza? (Regla Técnica)</div>';
+          inner += '          <p class="text-xs leading-relaxed ' + (isDark ? 'text-slate-200' : 'text-slate-800') + '">' + activeTopic.howToUse + '</p>';
+          inner += '        </div>';
+          if (activeTopic.appliedExample.visualAnalogyOrDiagram) {
+            inner += '        <div class="p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-300 text-xs font-mono">';
+            inner += '          🖼️ ' + activeTopic.appliedExample.visualAnalogyOrDiagram;
+            inner += '        </div>';
+          }
+          inner += '      </div>';
+
+          inner += '      <div class="space-y-2">';
+          inner += '        <div class="p-2.5 rounded-xl border border-slate-800 bg-slate-900/90 text-xs text-slate-300 flex items-center justify-between">';
+          inner += '          <span>💡 <strong>Escenario:</strong> ' + activeTopic.appliedExample.scenario + '</span>';
+          inner += '          <span class="text-amber-400 text-[10px] font-bold font-mono">' + (currentLang === 'csharp' ? 'C# .NET' : 'Java 17') + '</span>';
+          inner += '        </div>';
+          inner += '        <pre class="p-3 rounded-xl bg-black border border-slate-800 font-mono text-xs text-emerald-300 whitespace-pre overflow-x-auto leading-relaxed">' + escapeHtml(code) + '</pre>';
+          inner += '      </div>';
+          inner += '    </div>';
+
+          inner += '    <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">';
+          inner += '      <button onclick="selectTopic(' + (selectedTopicIndex > 0 ? selectedTopicIndex - 1 : total - 1) + ')" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold">← Tema Anterior</button>';
+          inner += '      <button onclick="selectTopic(' + (selectedTopicIndex < total - 1 ? selectedTopicIndex + 1 : 0) + ')" class="px-3 py-1.5 rounded-lg border border-amber-500/50 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-xs">Siguiente Tema →</button>';
+          inner += '    </div>';
+          inner += '  </div>';
+        } else {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[460px] overflow-y-auto pr-1">';
+          tb.topics.forEach(t => {
+            const cd = currentLang === 'csharp' ? t.appliedExample.csharpCode : t.appliedExample.javaCode;
+            inner += '    <div class="p-3.5 rounded-2xl border ' + (isDark ? 'bg-slate-950/80 border-slate-800' : 'bg-white border-slate-200') + ' space-y-2">';
+            inner += '      <div class="flex items-center justify-between gap-1">';
+            inner += '        <span class="font-mono font-bold text-xs px-2 py-0.5 rounded bg-amber-500 text-slate-950">' + t.code + '</span>';
+            inner += '        <h4 class="font-bold text-xs text-white">' + t.title + '</h4>';
+            inner += '      </div>';
+            inner += '      <p class="text-[11px] text-slate-300"><strong>Qué significa:</strong> ' + t.whatItMeans + '</p>';
+            inner += '      <p class="text-[11px] text-amber-300/90"><strong>Cómo se usa:</strong> ' + t.howToUse + '</p>';
+            inner += '      <pre class="p-2 rounded-xl bg-black border border-slate-800 font-mono text-[10px] text-emerald-400 whitespace-pre overflow-x-auto">' + escapeHtml(cd) + '</pre>';
+            inner += '    </div>';
+          });
+          inner += '  </div>';
+        }
+
+        inner += '</div>';
+      } else if (slide.type === 'core_concept_dual' && slide.content.codeComparison) {
+        const comp = slide.content.codeComparison;
+        const code = currentLang === 'csharp' ? comp.csharpCode : comp.javaCode;
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="flex items-center justify-between text-xs text-amber-400 font-bold">';
+        inner += '    <span>' + comp.concept + '</span>';
+        inner += '    <span class="font-mono text-slate-400">' + (currentLang === 'csharp' ? 'Program.cs (.NET 8)' : 'Main.java (Java 17)') + '</span>';
+        inner += '  </div>';
+        inner += '  <pre class="p-4 rounded-2xl bg-black border border-slate-800 font-mono text-xs sm:text-sm text-slate-100 overflow-x-auto whitespace-pre leading-relaxed">' + escapeHtml(code) + '</pre>';
+        inner += '  <p class="p-3 rounded-xl border border-slate-800 bg-slate-950 text-xs sm:text-sm text-slate-300">💡 ' + comp.explanation + '</p>';
+        inner += '</div>';
+      } else if (slide.type === 'instruction_anatomy' && slide.content.instructionAnatomy) {
+        const anat = slide.content.instructionAnatomy;
+        const activePart = anat.parts[selectedAnatomyIndex] || anat.parts[0];
+        inner += '<div class="space-y-5">';
+        inner += '  <div class="p-4 rounded-2xl bg-black border border-slate-800 font-mono text-sm sm:text-base text-emerald-300 font-bold overflow-x-auto whitespace-pre">' + escapeHtml(anat.instructionStatement) + '</div>';
+        inner += '  <div class="flex flex-wrap gap-2">';
+        anat.parts.forEach((p, pIdx) => {
+          const isAct = pIdx === selectedAnatomyIndex;
+          inner += '    <button onclick="selectAnatomy(' + pIdx + ')" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ' + (isAct ? 'bg-amber-500 text-slate-950 border-amber-400' : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700') + '">';
+          inner += '      <span class="font-mono">' + p.token + '</span> · ' + p.name;
+          inner += '    </button>';
+        });
+        inner += '  </div>';
+        inner += '  <div class="p-5 rounded-2xl border border-amber-500/30 bg-amber-950/20 text-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">';
+        inner += '    <div><strong class="text-amber-400 block mb-1">⚙️ ¿Qué hace en la memoria / procesador?</strong><p>' + activePart.role + '</p></div>';
+        inner += '    <div><strong class="text-emerald-400 block mb-1">💡 Analogía sencilla para cualquiera:</strong><p>"' + activePart.everydayAnalogy + '"</p></div>';
+        inner += '  </div>';
+        inner += '</div>';
+      } else if (slide.type === 'simple_example' && slide.content.simpleExample) {
+        const ex = slide.content.simpleExample;
+        const code = currentLang === 'csharp' ? ex.csharpSnippet : ex.javaSnippet;
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="p-3 rounded-xl border border-amber-500/30 bg-amber-950/20 text-xs sm:text-sm text-amber-300">🎯 <strong>Escenario Cotidiano:</strong> ' + ex.domainScenario + '</div>';
+        inner += '  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">';
+        inner += '    <div><pre class="p-4 rounded-xl bg-black border border-slate-800 font-mono text-xs text-slate-100 overflow-x-auto max-h-64 leading-relaxed">' + escapeHtml(code) + '</pre></div>';
+        inner += '    <div class="space-y-3">';
+        inner += '      <pre class="p-3 rounded-xl bg-black border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto whitespace-pre">' + escapeHtml(ex.consoleOutput) + '</pre>';
+        inner += '      <div class="space-y-1">';
+        ex.stepByStepExplanation.forEach(st => {
+          inner += '        <div class="text-xs text-slate-300 flex items-start gap-1.5"><span>✓</span><span>' + st + '</span></div>';
+        });
+        inner += '      </div>';
+        inner += '    </div>';
+        inner += '  </div>';
+        inner += '</div>';
+      } else if (slide.type === 'common_mistakes' && slide.content.commonMistakes) {
+        inner += '<div class="space-y-4">';
+        slide.content.commonMistakes.forEach(cm => {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">';
+          inner += '    <div class="p-4 rounded-2xl border border-rose-500/30 bg-rose-950/20 space-y-2">';
+          inner += '      <strong class="text-rose-400 block">❌ Error Típico:</strong>';
+          inner += '      <pre class="font-mono text-[11px] bg-black p-2 rounded text-rose-300">' + escapeHtml(cm.wrongCode) + '</pre>';
+          inner += '      <p class="text-rose-200">' + cm.wrongExplanation + '</p>';
+          inner += '    </div>';
+          inner += '    <div class="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-950/20 space-y-2">';
+          inner += '      <strong class="text-emerald-400 block">✅ Forma Correcta:</strong>';
+          inner += '      <pre class="font-mono text-[11px] bg-black p-2 rounded text-emerald-300">' + escapeHtml(cm.rightCode) + '</pre>';
+          inner += '      <p class="text-emerald-200">' + cm.rightExplanation + '</p>';
+          inner += '    </div>';
+          inner += '  </div>';
+          inner += '  <div class="p-2.5 rounded-xl border border-amber-500/30 bg-amber-950/20 text-xs text-amber-300 text-center font-bold">⭐ Regla de Oro: ' + cm.ruleOfThumb + '</div>';
+        });
+        inner += '</div>';
+      } else if (slide.type === 'classroom_challenge' && slide.content.challenge) {
+        const ch = slide.content.challenge;
+        inner += '<div class="space-y-4 max-w-xl mx-auto text-center">';
+        inner += '  <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 font-bold text-xs">⏱️ Tiempo: ' + ch.timeMinutes + ' minutos</span>';
+        inner += '  <div class="p-6 rounded-2xl border border-slate-800 bg-black space-y-2">';
+        inner += '    <h3 class="text-xl font-bold text-white">' + ch.question + '</h3>';
+        inner += '    <p class="text-xs text-slate-300">' + ch.instructions + '</p>';
+        inner += '  </div>';
+        inner += '  <div class="p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-xs text-emerald-300 text-left"><strong>✓ Respuesta Sugerida:</strong><p class="mt-1">' + ch.expectedAnswer + '</p></div>';
+        inner += '</div>';
+      } else if (slide.type === 'weekly_activity_bridge' && slide.content.activityBridge) {
+        const ab = slide.content.activityBridge;
+        inner += '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">';
+        inner += '  <div class="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-black text-[10px] uppercase">Actividad 1: Básica</span><h4 class="font-bold text-white">' + ab.act1Title + '</h4><p class="text-slate-400">' + ab.act1Desc + '</p></div>';
+        inner += '  <div class="p-4 rounded-2xl border border-blue-500/30 bg-blue-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-black text-[10px] uppercase">Actividad 2: Intermedia</span><h4 class="font-bold text-white">' + ab.act2Title + '</h4><p class="text-slate-400">' + ab.act2Desc + '</p></div>';
+        inner += '  <div class="p-4 rounded-2xl border border-purple-500/30 bg-purple-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-black text-[10px] uppercase">Actividad 3: Entregable</span><h4 class="font-bold text-white">' + ab.act3Title + '</h4><p class="text-slate-400">' + ab.act3Desc + '</p></div>';
+        inner += '</div>';
+      }
+
+      card.innerHTML = inner;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function nextSlide() {
+      if (currentIndex < slides.length - 1) {
+        currentIndex++;
+      } else {
+        currentIndex = 0;
+      }
+      selectedAnatomyIndex = 0;
+      selectedTopicIndex = 0;
+      showAllTopicsGrid = false;
+      renderSlide();
+    }
+
+    function prevSlide() {
+      if (currentIndex > 0) {
+        currentIndex--;
+      } else {
+        currentIndex = slides.length - 1;
+      }
+      selectedAnatomyIndex = 0;
+      selectedTopicIndex = 0;
+      showAllTopicsGrid = false;
+      renderSlide();
+    }
+
+    function selectAnatomy(idx) {
+      selectedAnatomyIndex = idx;
+      renderSlide();
+    }
+
+    function selectTopic(idx) {
+      selectedTopicIndex = idx;
+      renderSlide();
+    }
+
+    function toggleTopicGrid() {
+      showAllTopicsGrid = !showAllTopicsGrid;
+      renderSlide();
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === 'csharp' ? 'java' : 'csharp';
+      const btn = document.getElementById('btn-lang');
+      btn.textContent = currentLang === 'csharp' ? 'C# .NET' : 'Java 17';
+      btn.className = currentLang === 'csharp'
+        ? 'px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold transition-all'
+        : 'px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 text-xs font-black transition-all';
+      renderSlide();
+    }
+
+    function toggleTheme() {
+      isDark = !isDark;
+      document.body.className = isDark
+        ? 'bg-slate-950 text-slate-100 min-h-screen flex flex-col'
+        : 'bg-slate-100 text-slate-900 min-h-screen flex flex-col';
+      const card = document.getElementById('slide-card');
+      if (card) {
+        card.className = isDark
+          ? 'bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl min-h-[580px] flex flex-col justify-between transition-all'
+          : 'bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-xl min-h-[580px] flex flex-col justify-between transition-all';
+      }
+      renderSlide();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      }
+    });
+
+    renderSlide();
+  </script>
+</body>
+</html>

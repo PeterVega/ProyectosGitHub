@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "Class_POO_Sem4Act3/1.0.0": {
+        "runtime": {
+          "Class_POO_Sem4Act3.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Class_POO_Sem4Act3/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

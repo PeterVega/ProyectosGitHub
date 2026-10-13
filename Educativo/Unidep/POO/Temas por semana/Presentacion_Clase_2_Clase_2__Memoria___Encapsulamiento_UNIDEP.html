@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase 2: Clases, Memoria Stack vs. Heap y Encapsulamiento - UNIDEP - Universidad del Desarrollo Profesional</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    pre, code, .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .print-slide { page-break-after: always; break-after: page; border: 1px solid #cbd5e1; margin-bottom: 2rem; padding: 2rem; border-radius: 1rem; }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-400 selection:text-slate-950">
+
+  <!-- Top Navigation & Controls Bar -->
+  <header class="no-print bg-slate-900 border-b border-slate-800 px-4 py-3 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider">
+          UNIDEP - Universidad del Desarrollo Profesional OFFLINE
+        </span>
+        <div>
+          <h1 class="text-sm font-bold text-white line-clamp-1">Clase 2: Clases, Memoria Stack vs. Heap y Encapsulamiento</h1>
+          <p class="text-[11px] text-slate-400 font-mono">Semana 2 · Unidad 2 y Unidad 3</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span id="slide-indicator" class="text-xs font-mono font-bold px-3 py-1 rounded-lg bg-slate-800 border border-slate-700 text-amber-300">
+          1 / 10
+        </span>
+        <button onclick="toggleLang()" id="btn-lang" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold transition-all">
+          C# .NET
+        </button>
+        <button onclick="toggleTheme()" id="btn-theme" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700" title="Cambiar tema claro/oscuro">
+          🌓 Modo
+        </button>
+        <button onclick="window.print()" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700">
+          🖨️ Imprimir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Slide Canvas Container -->
+  <main class="no-print flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center">
+    <div id="slide-card" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl min-h-[580px] flex flex-col justify-between transition-all">
+      <!-- Dynamic slide content injected by JavaScript -->
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="mt-4 flex items-center justify-between">
+      <button onclick="prevSlide()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-all flex items-center gap-2">
+        ← Anterior
+      </button>
+
+      <div id="dots-container" class="flex items-center gap-1.5 overflow-x-auto max-w-md px-2 py-1">
+        <!-- Dots injected here -->
+      </div>
+
+      <button onclick="nextSlide()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all flex items-center gap-2 shadow-lg">
+        Siguiente →
+      </button>
+    </div>
+
+    <!-- Quick Help & Shortcuts -->
+    <div class="mt-4 text-center text-slate-500 text-[11px]">
+      💡 Usa las teclas <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">←</kbd> y <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">→</kbd> para navegar las diapositivas. Archivo 100% autónomo para uso sin internet.
+    </div>
+  </main>
+
+  <script>
+    const slides = [{"id":"c2-s1","slideNumber":1,"type":"cover","title":"Memoria Stack vs. Heap y el Principio de Encapsulamiento","subtitle":"Por qué no debes permitir que cualquiera modifique el saldo de una cuenta bancaria a su antojo","badge":"Semana 2 · Cátedra Oficial","content":{"leadText":"Hoy descubriremos dónde viven los objetos en tu memoria RAM y cómo crear una \"caja fuerte\" alrededor de tus datos.","bulletPoints":[{"icon":"🧠","title":"La Memoria del Computador","desc":"Stack (punteros rápidos y variables locales) vs. Heap (espacio dinámico donde nacen los objetos creados con new)."},{"icon":"🛡️","title":"Encapsulamiento y Protección","desc":"Atributos privados (private) y accesores controlados (getters/setters y properties con validación)."},{"icon":"🔑","title":"La Palabra Clave \"this\"","desc":"Resolver la ambigüedad entre parámetros recibidos y atributos internos del objeto."}]},"speakerNotes":"Iniciar preguntando: \"¿Dejarías que un cajero automático tenga una variable pública donde cualquiera pueda escribir saldo = 1000000000?\". La respuesta es no: ahí entra el encapsulamiento."},{"id":"c2-s2","slideNumber":2,"type":"real_world_analogy","title":"El Problema de la Memoria: Stack vs. Heap en la Vida Real","subtitle":"El control remoto en tu mano (Stack) y la pantalla gigante en la pared (Heap)","badge":"Visualización de Memoria","content":{"imageUrl":"/src/assets/images/memory_stack_heap_1791519170579.jpg","imageCaption":"El Stack almacena las referencias ordenadas y rápidas; el Heap guarda los objetos voluminosos y dinámicos.","analogyBox":{"title":"La Ficha del Guardarropa y el Abrigo","analogy":"Cuando vas a un teatro, no cargas tu abrigo pesado en tu bolsillo. Te dan una ficha de plástico con el número \"42\". La ficha de plástico ligera vive en tu bolsillo (Memoria Stack). Tu abrigo pesado de lana cuelga en el armario grande al fondo (Memoria Heap). Si pierdes la ficha, tu abrigo sigue en el armario pero no puedes alcanzarlo (fuga de memoria / objeto huérfano).","moral":"Las variables en POO no son el objeto en sí; son la ficha de plástico con la dirección para encontrarlo."}},"speakerNotes":"Mostrar la imagen de Stack vs Heap. Explicar cómo el Garbage Collector de .NET y Java barre los objetos huérfanos sin ficha."},{"id":"c2-s3","slideNumber":3,"type":"topic_breakdown","title":"Módulo Temático 3: Metodología OO y Miembros (U3.1 a U3.6)","subtitle":"Análisis, declaración de clases, atributos, métodos, operador punto y la referencia this","badge":"Temario Oficial · Unidad 3","content":{"topicBreakdown":{"unitCode":"U3","unitTitle":"Programación Orientada a Objetos: Declaración y Miembros","summary":"Las 6 normas metodológicas y sintácticas para estructurar miembros de clases y desambiguar referencias con this.","topics":[{"code":"U3.1","title":"Análisis y Diseño Orientado a Objetos","keyBadge":"Metodología","whatItMeans":"Es el proceso de leer los requerimientos de un problema en español y transformarlos en clases: los sustantivos se convierten en clases, los adjetivos en atributos y los verbos en métodos.","howToUse":"Se identifican los actores y entidades clave antes de escribir código. Se dibuja un diagrama UML rápido para validar relaciones y responsabilidades únicas.","appliedExample":{"scenario":"\"Un cliente realiza pedidos de productos\"","csharpCode":"// C# .NET\n// Clases resultantes: Cliente, Pedido, Producto\npublic class Pedido { public Cliente Comprador { get; set; } }","javaCode":"// Java 17+\npublic class Pedido { private Cliente comprador; }","visualAnalogyOrDiagram":"Texto en lenguaje natural ──[Análisis]──> Clases + Atributos + Métodos"}},{"code":"U3.2","title":"Declaración de Clases","keyBadge":"Arquitectura","whatItMeans":"Es la especificación formal del contrato de la clase con sus modificadores de visibilidad (public, internal, etc.).","howToUse":"En Java cada clase pública va en su propio archivo .java. En C# una clase puede definirse en archivos limpios con namespaces.","appliedExample":{"scenario":"Clase de servicio bancario","csharpCode":"// C# .NET\npublic class GestorCuentas {\n    // Lógica del gestor\n}","javaCode":"// Java 17+\npublic class GestorCuentas {\n    // Lógica del gestor\n}","visualAnalogyOrDiagram":"Plano técnico con membrete y especificaciones formales."}},{"code":"U3.3","title":"Declaración de Atributos","keyBadge":"Estado del Objeto","whatItMeans":"Son las variables que viven dentro del objeto en el Heap y representan su estado. Cada objeto tiene su propia copia independiente de estos atributos.","howToUse":"Deben tener un tipo de dato explícito (int, double, string, boolean) y casi siempre visibilidad private para respetar el encapsulamiento.","appliedExample":{"scenario":"Atributos de una cuenta de ahorros","csharpCode":"// C# .NET\nprivate string numeroCuenta;\nprivate double saldoActual;\nprivate bool estaActiva;","javaCode":"// Java 17+\nprivate String numeroCuenta;\nprivate double saldoActual;\nprivate boolean estaActiva;","visualAnalogyOrDiagram":"Ficha médica: campos con nombre, tipo de sangre y antecedentes del paciente."}},{"code":"U3.4","title":"Declaración de Métodos","keyBadge":"Comportamiento","whatItMeans":"Son los bloques de código que operan sobre los atributos del objeto para realizar cálculos, comprobaciones o cambios de estado.","howToUse":"Deben tener nombres de verbos claros (ej. ProcesarPago, CalcularInteres). Si no retornan nada, se usa void; si devuelven un cálculo, se indica el tipo de dato retornado.","appliedExample":{"scenario":"Operación de retiro con verificación","csharpCode":"// C# .NET\npublic bool Retirar(double monto) {\n    if (monto <= saldoActual) { saldoActual -= monto; return true; }\n    return false;\n}","javaCode":"// Java 17+\npublic boolean retirar(double monto) {\n    if (monto <= saldoActual) { this.saldoActual -= monto; return true; }\n    return false;\n}","visualAnalogyOrDiagram":"Caja negra: recibe monto -> verifica saldo -> descuenta -> responde éxito/fracaso."}},{"code":"U3.5","title":"Acceso a Miembros de un Objeto","keyBadge":"Operador Punto","whatItMeans":"Es la forma en que el programador invoca un método o consulta una propiedad del objeto mediante la referencia que tiene en la variable.","howToUse":"Se escribe nombreVariable.miembro. Si la variable vale null, la computadora lanzará el error NullReferenceException o NullPointerException.","appliedExample":{"scenario":"Uso de un cliente instanciado","csharpCode":"// C# .NET\nCliente cli = new Cliente(\"Ana Lopez\");\nstring nombre = cli.ObtenerNombreCompleto();","javaCode":"// Java 17+\nCliente cli = new Cliente(\"Ana Lopez\");\nString nombre = cli.obtenerNombreCompleto();","visualAnalogyOrDiagram":"Variable en Stack (Puntero láser) ──apunta a──> Objeto real en Heap"}},{"code":"U3.6","title":"Referencia this","keyBadge":"Auto-referencia","whatItMeans":"Es una palabra clave que representa \"yo mismo\". Se refiere al objeto específico que está ejecutando el método en este momento.","howToUse":"Se utiliza principalmente para desambiguar cuando el nombre de un parámetro es idéntico al del atributo de la clase (ej. this.saldo = saldo) y para encadenar constructores.","appliedExample":{"scenario":"Constructor asignando parámetros homónimos","csharpCode":"// C# .NET\npublic Cuenta(double saldo) {\n    this.saldo = saldo; // this.saldo es el atributo, saldo es el parámetro\n}","javaCode":"// Java 17+\npublic Cuenta(double saldo) {\n    this.saldo = saldo;\n}","visualAnalogyOrDiagram":"Pronombre \"Yo\": aclara si me refiero a mi propio bolsillo o al dinero que me entregan en la mano."}}]}},"speakerNotes":"Explicar los 6 temas de la Unidad 3: desde el análisis orientado a objetos hasta el operador punto y la referencia this."},{"id":"c2-s4","slideNumber":4,"type":"topic_breakdown","title":"Módulo Temático 4: Expresiones y Operadores (U4.1 a U4.7)","subtitle":"Alcance Stack vs Heap, inicialización, operadores lógicos, aritméticos, relacionales y de bits","badge":"Temario Oficial · Unidad 4","content":{"topicBreakdown":{"unitCode":"U4","unitTitle":"Expresiones Computacionales y Operadores de Control","summary":"Los 7 conceptos esenciales de evaluación de expresiones cuantitativas, precedencia y manipulación en memoria.","topics":[{"code":"U4.1","title":"Variables y su Alcance (Scope)","keyBadge":"Memoria Stack vs Heap","whatItMeans":"El alcance determina dónde una variable existe y es visible. Las variables locales viven dentro de un método en la memoria rápida (Stack) y mueren al salir del bloque. Los atributos viven en los objetos (Heap) mientras el objeto siga vivo.","howToUse":"Declara las variables en el bloque más pequeño posible donde se necesiten para ahorrar memoria y prevenir errores de modificación accidental.","appliedExample":{"scenario":"Variable temporal de cálculo vs atributo permanente","csharpCode":"// C# .NET\npublic void Calcular() {\n    int factorTemporal = 2; // Nace y muere aquí en el Stack\n    this.total = this.baseCalculo * factorTemporal;\n}","javaCode":"// Java 17+\npublic void calcular() {\n    int factorTemporal = 2;\n    this.total = this.baseCalculo * factorTemporal;\n}","visualAnalogyOrDiagram":"Post-it temporal en tu mano (Stack) vs Documento archivado en el cajón (Heap)."}},{"code":"U4.2","title":"Inicialización de Variables","keyBadge":"Valores por Defecto","whatItMeans":"Es darle su primer valor a una variable. Los atributos de los objetos se inicializan por defecto automáticamente (0 para números, false para booleanos, null para referencias). Las variables locales de un método exigen inicialización explícita antes de usarse.","howToUse":"Siempre asigna un valor inicial conocido a tus variables locales para evitar errores de compilación (\"variable no asignada\").","appliedExample":{"scenario":"Acumulador de suma inicializado en cero","csharpCode":"// C# .NET\ndouble acumulador = 0.0; // Inicialización explícita obligatoria\nacumulador += 150.50;","javaCode":"// Java 17+\ndouble acumulador = 0.0;\nacumulador += 150.50;","visualAnalogyOrDiagram":"Pizarra limpia: antes de escribir el total, debes borrarla y dejarla en cero."}},{"code":"U4.3","title":"Operadores y Precedencia","keyBadge":"Expresiones Matemáticas","whatItMeans":"Determina el orden estricto en que la computadora evalúa los cálculos. La multiplicación y división ocurren antes que la suma y la resta.","howToUse":"Usa paréntesis ( ) siempre que quieras garantizar el orden exacto de una operación y mejorar la legibilidad para otros programadores.","appliedExample":{"scenario":"Cálculo de promedio con ponderación","csharpCode":"// C# .NET\ndouble promedio = (nota1 + nota2 + nota3) / 3.0; // Con paréntesis correcto","javaCode":"// Java 17+\ndouble promedio = (nota1 + nota2 + nota3) / 3.0;","visualAnalogyOrDiagram":"Jerarquía de operaciones: Paréntesis () > Multiplicación/División */% > Suma/Resta +-"}},{"code":"U4.4","title":"Operadores Lógicos (&&, ||, !)","keyBadge":"Evaluación Cortocircuito","whatItMeans":"Permiten combinar condiciones: AND (&&) exige que ambas sean verdaderas; OR (||) exige que al menos una lo sea; NOT (!) invierte el resultado. Usan cortocircuito: si el primer término de && es falso, ya no evalúa el segundo.","howToUse":"Aprovecha el cortocircuito para evitar caídas: if (cliente != null && cliente.TieneCredito) nunca fallará con null.","appliedExample":{"scenario":"Aprobación de préstamo hipotecario","csharpCode":"// C# .NET\nbool apto = (edad >= 21) && (ingresos > 15000) && (!tieneDeudaMorosa);","javaCode":"// Java 17+\nboolean apto = (edad >= 21) && (ingresos > 15000) && (!tieneDeudaMorosa);","visualAnalogyOrDiagram":"Cerradura doble: necesitas la Llave A Y la Llave B para abrir la puerta de seguridad."}},{"code":"U4.5","title":"Operadores Aritméticos (+, -, *, /, %)","keyBadge":"Cálculos Cuantitativos","whatItMeans":"Suma (+), resta (-), multiplicación (*), división (/) y residuo/módulo (%). Ojo: dividir dos enteros (ej. 7 / 2) da 3 en lugar de 3.5 porque trunca los decimales.","howToUse":"Si quieres decimales, asegúrate de que al menos uno de los números sea double o float (ej. 7.0 / 2 o (double)a / b). Usa % para saber si un número es par (n % 2 == 0).","appliedExample":{"scenario":"Distribución de elementos en grupos y sobrantes","csharpCode":"// C# .NET\nint cajasCompletas = items / 12;\nint sobrantes = items % 12; // Módulo residuo","javaCode":"// Java 17+\nint cajasCompletas = items / 12;\nint sobrantes = items % 12;","visualAnalogyOrDiagram":"Repartir 10 manzanas entre 3 niños: 3 manzanas a cada uno y sobra 1 (10 % 3 = 1)."}},{"code":"U4.6","title":"Operadores Relacionales (==, !=, <, >, <=, >=)","keyBadge":"Comparaciones","whatItMeans":"Comparan dos valores y siempre devuelven un booleano (true o false). En tipos primitivos comparan su valor numérico; en objetos en Java, == compara si apuntan a la misma dirección de memoria (usa .equals() para comparar texto).","howToUse":"En Java para comparar cadenas usa: texto1.equals(texto2). En C# el operador == ya está sobrecargado para comparar el contenido del texto.","appliedExample":{"scenario":"Validación de saldo suficiente para compra","csharpCode":"// C# .NET\nbool puedeComprar = saldoDisponible >= costoProducto;","javaCode":"// Java 17+\nboolean puedeComprar = saldoDisponible >= costoProducto;\nboolean mismoNombre = usuario1.getNombre().equals(usuario2.getNombre());","visualAnalogyOrDiagram":"Balanza de platillos: devuelve SI o NO según cuál platillo esté más pesado o si están iguales."}},{"code":"U4.7","title":"Operadores a Nivel de Bits (&, |, ^, ~, <<, >>)","keyBadge":"Operaciones Binarias","whatItMeans":"Manipulan directamente los ceros y unos de la memoria binaria. Se usan para permisos, banderas de configuración, compresión y criptografía.","howToUse":"El operador & aplica AND bit a bit, | aplica OR bit a bit, ^ es XOR (exclusivo), y << desplaza bits a la izquierda (equivale a multiplicar por 2 rápidamente).","appliedExample":{"scenario":"Sistema de roles y permisos con máscara de bits","csharpCode":"// C# .NET\nconst int LEER = 1;     // 0001\nconst int ESCRIBIR = 2; // 0010\nint permisoUsuario = LEER | ESCRIBIR; // 0011 (Tiene ambos permisos)\nbool puedeEscribir = (permisoUsuario & ESCRIBIR) != 0;","javaCode":"// Java 17+\nint LEER = 1, ESCRIBIR = 2;\nint permiso = LEER | ESCRIBIR;\nboolean puedeEscribir = (permiso & ESCRIBIR) != 0;","visualAnalogyOrDiagram":"Tablero de 4 interruptores: cada bit [0 0 1 1] enciende o apaga una función específica."}}]}},"speakerNotes":"Explicar los 7 temas de la Unidad 4: variables locales en Stack vs atributos en Heap, operadores aritméticos, lógicos con cortocircuito y máscaras de bits."},{"id":"c2-s5","slideNumber":5,"type":"core_concept_dual","title":"Concepto Clave: Encapsulamiento con Propiedades en C# y Java","subtitle":"Protege las variables privadas de valores absurdos (como edad negativa o saldo nulo)","badge":"Patrón de Encapsulamiento","content":{"codeComparison":{"concept":"Propiedad con validación para evitar números negativos","csharpCode":"// C# .NET 8: Propiedad con Respaldo\npublic class CuentaBancaria\n{\n    private double _saldo; // Caja fuerte privada\n\n    public double Saldo\n    {\n        get => _saldo;\n        set\n        {\n            if (value >= 0)\n                _saldo = value;\n            else\n                Console.WriteLine(\"Error: Saldo no puede ser negativo\");\n        }\n    }\n}","javaCode":"// Java: Getters y Setters tradicionales\npublic class CuentaBancaria {\n    private double saldo; // Caja fuerte privada\n\n    public double getSaldo() {\n        return this.saldo;\n    }\n\n    public void setSaldo(double nuevoSaldo) {\n        if (nuevoSaldo >= 0) {\n            this.saldo = nuevoSaldo;\n        } else {\n            System.out.println(\"Error: Saldo no puede ser negativo\");\n        }\n    }\n}","explanation":"En ambos casos, ningún programador externo puede hacer \"cuenta.saldo = -500\". El acceso pasa obligatoriamente por el guardia de seguridad (la validación)."}},"speakerNotes":"Resaltar la elegancia de las Properties de C# frente a los tradicionales getters/setters de Java, aunque la filosofía protectora es idéntica."},{"id":"c2-s6","slideNumber":6,"type":"instruction_anatomy","title":"Anatomía de la Instrucción: Propiedad con Validación Defensiva","subtitle":"Desglose de la sintaxis de una propiedad en C#","badge":"⭐ Anatomía Visual de la Instrucción","content":{"instructionAnatomy":{"instructionStatement":"public double Saldo { get => _saldo; set { if (value >= 0) _saldo = value; } }","statementContext":"Esta propiedad compacta reemplaza cientos de líneas de código y blinda la integridad de la cuenta bancaria.","parts":[{"token":"public","name":"1. Modificador Público","role":"Permite que cualquier parte del sistema consulte o intente modificar el saldo a través de esta puerta.","everydayAnalogy":"La ventanilla abierta al público en una sucursal bancaria.","color":"emerald"},{"token":"double Saldo","name":"2. Tipo y Nombre de Propiedad","role":"Declara el nombre visible de la propiedad en PascalCase y el tipo de dato que maneja (decimales).","everydayAnalogy":"El letrero que dice \"Consulta de Saldo en Pesos\".","color":"blue"},{"token":"get => _saldo;","name":"3. Accesor de Lectura (Getter)","role":"Devuelve el valor privado al exterior cuando alguien hace \"Console.WriteLine(c.Saldo)\".","everydayAnalogy":"La pantalla que te muestra tu saldo en el cajero sin dejarte tocar el dinero.","color":"purple"},{"token":"set","name":"4. Accesor de Escritura (Setter)","role":"Se activa automáticamente cuando alguien intenta asignar un valor con \"c.Saldo = 100\".","everydayAnalogy":"La ranura para depositar billetes.","color":"amber"},{"token":"value","name":"5. Palabra Clave \"value\"","role":"Palabra reservada en C# que contiene el dato que el usuario intentó guardar.","everydayAnalogy":"El fajo de billetes que el cliente acaba de entregar en la ventanilla.","color":"rose"},{"token":"if (value >= 0) _saldo = value;","name":"6. Regla de Validación","role":"Filtro de seguridad que valida el dato antes de guardarlo en la variable privada real.","everydayAnalogy":"El detector de billetes falsos que rechaza el dinero si algo no coincide.","color":"cyan"}],"takeaway":"El encapsulamiento convierte a tus objetos en entidades responsables de su propia salud interna."}},"speakerNotes":"Pedir que observen la palabra mágica \"value\" en C#. Explicar que equivale al parámetro que en Java recibiría el método setSaldo(double nuevoSaldo)."},{"id":"c2-s7","slideNumber":7,"type":"simple_example","title":"Ejemplo Sencillo en Vivo: Termómetro Inteligente","subtitle":"Validación de temperatura en grados Celsius que rechaza el cero absoluto imposible","badge":"Ejemplo Práctico","content":{"simpleExample":{"domainScenario":"Crear un termómetro digital que solo acepte temperaturas mayores a -273.15 °C (cero absoluto físico).","csharpSnippet":"using System;\n\npublic class Termometro\n{\n    private double _celsius;\n\n    public double Celsius\n    {\n        get => _celsius;\n        set\n        {\n            if (value >= -273.15)\n                _celsius = value;\n            else\n                Console.WriteLine(\"⚠️ Error: Temperatura por debajo del cero absoluto imposible.\");\n        }\n    }\n}\n\nclass Program\n{\n    static void Main()\n    {\n        Termometro t = new Termometro();\n        t.Celsius = 25.5;  // Asignación válida\n        Console.WriteLine($\"Temperatura actual: {t.Celsius} °C\");\n\n        t.Celsius = -500;  // Asignación inválida rechazada\n        Console.WriteLine($\"Temperatura protegida: {t.Celsius} °C\");\n    }\n}","javaSnippet":"public class Termometro {\n    private double celsius;\n\n    public double getCelsius() { return this.celsius; }\n    public void setCelsius(double val) {\n        if (val >= -273.15) this.celsius = val;\n        else System.out.println(\"⚠️ Error: Temperatura imposible.\");\n    }\n    public static void main(String[] args) {\n        Termometro t = new Termometro();\n        t.setCelsius(25.5);\n        t.setCelsius(-500);\n    }\n}","consoleOutput":"Temperatura actual: 25.5 °C\n⚠️ Error: Temperatura por debajo del cero absoluto imposible.\nTemperatura protegida: 25.5 °C","stepByStepExplanation":["Al intentar asignar -500, el validador detiene la escritura.","La variable interna _celsius se mantiene intacta en 25.5 °C, evitando que el sistema opere con datos corruptos."]}},"speakerNotes":"Enfatizar cómo el software de grado médico, aviación o automotriz utiliza este mismo patrón para evitar catástrofes en tiempo de ejecución."},{"id":"c2-s8","slideNumber":8,"type":"common_mistakes","title":"Errores Típicos: La Trampa de los Atributos Públicos Directos","subtitle":"Por qué \"public double saldo;\" es el enemigo número uno de la calidad de software","badge":"Buenas Prácticas","content":{"commonMistakes":[{"wrongCode":"// ❌ PÉSIMA PRÁCTICA\npublic class Cuenta {\n    public double Saldo; // Público sin ningún control\n}\ncuenta.Saldo = -9999999; // ¡Cualquiera arruina el negocio!","wrongExplanation":"Cualquier función o usuario puede inyectar datos inválidos sin que la clase pueda impedirlo ni enterarse.","rightCode":"// ✅ BUENA PRÁCTICA\npublic class Cuenta {\n    private double _saldo;\n    public double Saldo { get => _saldo; private set => _saldo = value; }\n    public void Depositar(double monto) { if (monto > 0) _saldo += monto; }\n}","rightExplanation":"Hacer el setter privado o usar métodos de negocio (Depositar, Retirar) garantiza que solo las operaciones autorizadas toquen el dinero.","ruleOfThumb":"Los atributos siempre deben ser privados (private); expón únicamente métodos y propiedades controladas."}]},"speakerNotes":"Mencionar que en las entrevistas laborales de programador junior, poner atributos públicos en una clase es motivo directo de descalificación."},{"id":"c2-s9","slideNumber":9,"type":"classroom_challenge","title":"Reto en Aula: Protege la Edad de un Conductor","subtitle":"Ejercicio de 5 minutos para afianzar encapsulamiento","badge":"Reto de Aula (5 min)","content":{"challenge":{"timeMinutes":5,"question":"¿Cómo blindarías la clase Conductor para que solo acepte edades entre 18 y 99 años?","instructions":"Escribe en tu editor una propiedad con validación que rechace si alguien intenta asignar 12 o 150 años.","expectedAnswer":"public int Edad { get => _edad; set { if (value >= 18 && value <= 99) _edad = value; else Console.WriteLine(\"Edad fuera de rango legal\"); } }"}},"speakerNotes":"Dar 5 minutos y pedir a un alumno que comparta pantalla o muestre su código en la pizarra."},{"id":"c2-s10","slideNumber":10,"type":"weekly_activity_bridge","title":"Entregables de la Semana 2 en la Plataforma","subtitle":"Aplica el encapsulamiento en el Simulador Financiero y Calificador de Créditos","badge":"Semana 2 · Entregables","content":{"activityBridge":{"act1Title":"Actividad 1 (Básica): Billetera Digital con Depósitos","act1Desc":"Modelado guiado con atributos privados y métodos Depositar/Retirar con validación.","act2Title":"Actividad 2 (Intermedia): Calificador de Crédito Bancario","act2Desc":"Evaluación de perfiles crediticios con encapsulamiento estricto y cálculo de intereses.","act3Title":"Actividad 3 (Avanzada): Simulador Financiero Integral","act3Desc":"Entregable oficial evaluado con rúbrica completa (15% ponderación)."}},"speakerNotes":"Invitar a revisar las consignas en la pestaña \"Actividades\"."}];
+    let currentIndex = 0;
+    let currentLang = 'csharp';
+    let isDark = true;
+    let selectedAnatomyIndex = 0;
+    let selectedTopicIndex = 0;
+    let showAllTopicsGrid = false;
+
+    function renderSlide() {
+      const slide = slides[currentIndex];
+      const card = document.getElementById('slide-card');
+      const indicator = document.getElementById('slide-indicator');
+      indicator.textContent = (currentIndex + 1) + ' / ' + slides.length;
+
+      // Update dots
+      const dotsContainer = document.getElementById('dots-container');
+      dotsContainer.innerHTML = '';
+      slides.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.className = idx === currentIndex
+          ? 'w-6 h-2 rounded-full bg-amber-500 transition-all'
+          : 'w-2 h-2 rounded-full bg-slate-700 hover:bg-slate-500 transition-all';
+        dot.onclick = () => { currentIndex = idx; selectedAnatomyIndex = 0; renderSlide(); };
+        dotsContainer.appendChild(dot);
+      });
+
+      let inner = '';
+
+      // Slide Top Meta
+      inner += '<div class="flex items-center justify-between border-b ' + (isDark ? 'border-slate-800 pb-4 mb-6' : 'border-slate-200 pb-4 mb-6') + '">';
+      inner += '  <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500 text-slate-950">' + slide.badge + '</span>';
+      inner += '  <span class="text-xs font-mono text-slate-400">' + slide.type.toUpperCase().replace(/_/g, ' ') + '</span>';
+      inner += '</div>';
+
+      // Title & Subtitle
+      inner += '<div class="mb-6">';
+      inner += '  <h2 class="text-2xl sm:text-3xl font-black leading-tight text-white mb-2">' + slide.title + '</h2>';
+      inner += '  <p class="text-sm sm:text-base ' + (isDark ? 'text-slate-300' : 'text-slate-600') + '">' + slide.subtitle + '</p>';
+      inner += '</div>';
+
+      // Slide Content based on type
+      if (slide.type === 'cover') {
+        inner += '<div class="space-y-6">';
+        inner += '  <p class="text-base sm:text-lg text-amber-300 font-semibold">' + (slide.content.leadText || '') + '</p>';
+        if (slide.content.bulletPoints) {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">';
+          slide.content.bulletPoints.forEach(bp => {
+            inner += '    <div class="p-4 rounded-2xl border ' + (isDark ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200 text-slate-900') + '">';
+            inner += '      <div class="text-2xl mb-2">' + (bp.icon || '📌') + '</div>';
+            inner += '      <h3 class="font-bold text-sm mb-1">' + bp.title + '</h3>';
+            inner += '      <p class="text-xs text-slate-400">' + bp.desc + '</p>';
+            inner += '    </div>';
+          });
+          inner += '  </div>';
+        }
+        inner += '</div>';
+      } else if (slide.type === 'real_world_analogy') {
+        inner += '<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">';
+        if (slide.content.imageUrl) {
+          inner += '  <div class="rounded-2xl overflow-hidden border border-slate-800 bg-black">';
+          inner += '    <img src="' + slide.content.imageUrl + '" alt="' + slide.title + '" class="w-full max-h-72 object-contain mx-auto" onerror="this.style.display=\'none\'">';
+          if (slide.content.imageCaption) {
+            inner += '    <p class="p-2 text-center text-xs text-slate-400 italic">' + slide.content.imageCaption + '</p>';
+          }
+          inner += '  </div>';
+        }
+        if (slide.content.analogyBox) {
+          inner += '  <div class="p-5 rounded-2xl border bg-amber-950/20 border-amber-500/30 text-slate-200 space-y-3">';
+          inner += '    <h3 class="text-xs uppercase font-black tracking-wider text-amber-400">💡 ' + slide.content.analogyBox.title + '</h3>';
+          inner += '    <p class="text-xs sm:text-sm leading-relaxed">' + slide.content.analogyBox.analogy + '</p>';
+          inner += '    <div class="pt-2 border-t border-amber-500/20 text-xs font-bold text-amber-300">📌 Conclusión: ' + slide.content.analogyBox.moral + '</div>';
+          inner += '  </div>';
+        }
+        inner += '</div>';
+      } else if (slide.type === 'topic_breakdown' && slide.content.topicBreakdown) {
+        const tb = slide.content.topicBreakdown;
+        const total = tb.topics.length;
+        const activeTopic = tb.topics[selectedTopicIndex] || tb.topics[0];
+        const code = currentLang === 'csharp' ? activeTopic.appliedExample.csharpCode : activeTopic.appliedExample.javaCode;
+
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="p-3.5 rounded-2xl border ' + (isDark ? 'bg-slate-950/70 border-slate-800' : 'bg-slate-50 border-slate-200 text-slate-900') + ' flex items-center justify-between flex-wrap gap-2">';
+        inner += '    <div class="flex items-center gap-2">';
+        inner += '      <span class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-xs font-mono">' + tb.unitCode + '</span>';
+        inner += '      <div><h3 class="font-black text-sm leading-tight">' + tb.unitTitle + '</h3><p class="text-[11px] text-slate-400">' + tb.summary + '</p></div>';
+        inner += '    </div>';
+        inner += '    <div class="flex items-center gap-2">';
+        inner += '      <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">' + total + ' temas</span>';
+        inner += '      <button onclick="toggleTopicGrid()" class="text-xs font-bold px-2.5 py-1 rounded-lg border ' + (showAllTopicsGrid ? 'bg-amber-500 text-slate-950 border-amber-400' : 'bg-slate-800 border-slate-700 text-amber-300 hover:bg-slate-700') + '">' + (showAllTopicsGrid ? 'Vista Enfocada' : 'Ver Todos en Cuadrícula') + '</button>';
+        inner += '    </div>';
+        inner += '  </div>';
+
+        if (!showAllTopicsGrid) {
+          inner += '  <div class="flex items-center gap-1.5 overflow-x-auto pb-1">';
+          tb.topics.forEach((t, tIdx) => {
+            const isSel = tIdx === selectedTopicIndex;
+            inner += '    <button onclick="selectTopic(' + tIdx + ')" class="px-3 py-1.5 rounded-xl text-xs font-bold border shrink-0 transition-all ' + (isSel ? 'bg-amber-500 text-slate-950 border-amber-400 font-black' : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700') + '">';
+            inner += '      <span class="font-mono bg-black/20 px-1.5 py-0.5 rounded text-[10px]">' + t.code + '</span> ' + t.title;
+            inner += '    </button>';
+          });
+          inner += '  </div>';
+
+          inner += '  <div class="p-5 rounded-2xl border ' + (isDark ? 'bg-slate-950/90 border-slate-800' : 'bg-white border-slate-200 text-slate-900') + '">';
+          inner += '    <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">';
+          inner += '      <div class="flex items-center gap-2">';
+          inner += '        <span class="font-mono font-black text-xs px-2 py-0.5 rounded bg-amber-500 text-slate-950">' + activeTopic.code + '</span>';
+          inner += '        <h4 class="text-base font-black">' + activeTopic.title + '</h4>';
+          if (activeTopic.keyBadge) {
+            inner += '        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">' + activeTopic.keyBadge + '</span>';
+          }
+          inner += '      </div>';
+          inner += '      <span class="text-xs font-mono text-slate-400">Tema ' + (selectedTopicIndex + 1) + ' de ' + total + '</span>';
+          inner += '    </div>';
+
+          inner += '    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">';
+          inner += '      <div class="space-y-3">';
+          inner += '        <div class="p-3.5 rounded-xl border ' + (isDark ? 'bg-blue-950/20 border-blue-500/30' : 'bg-blue-50 border-blue-200') + '">';
+          inner += '          <div class="text-blue-400 font-black text-xs uppercase mb-1">📖 ¿Qué Significa? (Definición Sencilla)</div>';
+          inner += '          <p class="text-xs leading-relaxed ' + (isDark ? 'text-slate-200' : 'text-slate-800') + '">' + activeTopic.whatItMeans + '</p>';
+          inner += '        </div>';
+          inner += '        <div class="p-3.5 rounded-xl border ' + (isDark ? 'bg-amber-950/20 border-amber-500/30' : 'bg-amber-50 border-amber-200') + '">';
+          inner += '          <div class="text-amber-400 font-black text-xs uppercase mb-1">⚙️ ¿Cómo se Utiliza? (Regla Técnica)</div>';
+          inner += '          <p class="text-xs leading-relaxed ' + (isDark ? 'text-slate-200' : 'text-slate-800') + '">' + activeTopic.howToUse + '</p>';
+          inner += '        </div>';
+          if (activeTopic.appliedExample.visualAnalogyOrDiagram) {
+            inner += '        <div class="p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-emerald-300 text-xs font-mono">';
+            inner += '          🖼️ ' + activeTopic.appliedExample.visualAnalogyOrDiagram;
+            inner += '        </div>';
+          }
+          inner += '      </div>';
+
+          inner += '      <div class="space-y-2">';
+          inner += '        <div class="p-2.5 rounded-xl border border-slate-800 bg-slate-900/90 text-xs text-slate-300 flex items-center justify-between">';
+          inner += '          <span>💡 <strong>Escenario:</strong> ' + activeTopic.appliedExample.scenario + '</span>';
+          inner += '          <span class="text-amber-400 text-[10px] font-bold font-mono">' + (currentLang === 'csharp' ? 'C# .NET' : 'Java 17') + '</span>';
+          inner += '        </div>';
+          inner += '        <pre class="p-3 rounded-xl bg-black border border-slate-800 font-mono text-xs text-emerald-300 whitespace-pre overflow-x-auto leading-relaxed">' + escapeHtml(code) + '</pre>';
+          inner += '      </div>';
+          inner += '    </div>';
+
+          inner += '    <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">';
+          inner += '      <button onclick="selectTopic(' + (selectedTopicIndex > 0 ? selectedTopicIndex - 1 : total - 1) + ')" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold">← Tema Anterior</button>';
+          inner += '      <button onclick="selectTopic(' + (selectedTopicIndex < total - 1 ? selectedTopicIndex + 1 : 0) + ')" class="px-3 py-1.5 rounded-lg border border-amber-500/50 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-xs">Siguiente Tema →</button>';
+          inner += '    </div>';
+          inner += '  </div>';
+        } else {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[460px] overflow-y-auto pr-1">';
+          tb.topics.forEach(t => {
+            const cd = currentLang === 'csharp' ? t.appliedExample.csharpCode : t.appliedExample.javaCode;
+            inner += '    <div class="p-3.5 rounded-2xl border ' + (isDark ? 'bg-slate-950/80 border-slate-800' : 'bg-white border-slate-200') + ' space-y-2">';
+            inner += '      <div class="flex items-center justify-between gap-1">';
+            inner += '        <span class="font-mono font-bold text-xs px-2 py-0.5 rounded bg-amber-500 text-slate-950">' + t.code + '</span>';
+            inner += '        <h4 class="font-bold text-xs text-white">' + t.title + '</h4>';
+            inner += '      </div>';
+            inner += '      <p class="text-[11px] text-slate-300"><strong>Qué significa:</strong> ' + t.whatItMeans + '</p>';
+            inner += '      <p class="text-[11px] text-amber-300/90"><strong>Cómo se usa:</strong> ' + t.howToUse + '</p>';
+            inner += '      <pre class="p-2 rounded-xl bg-black border border-slate-800 font-mono text-[10px] text-emerald-400 whitespace-pre overflow-x-auto">' + escapeHtml(cd) + '</pre>';
+            inner += '    </div>';
+          });
+          inner += '  </div>';
+        }
+
+        inner += '</div>';
+      } else if (slide.type === 'core_concept_dual' && slide.content.codeComparison) {
+        const comp = slide.content.codeComparison;
+        const code = currentLang === 'csharp' ? comp.csharpCode : comp.javaCode;
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="flex items-center justify-between text-xs text-amber-400 font-bold">';
+        inner += '    <span>' + comp.concept + '</span>';
+        inner += '    <span class="font-mono text-slate-400">' + (currentLang === 'csharp' ? 'Program.cs (.NET 8)' : 'Main.java (Java 17)') + '</span>';
+        inner += '  </div>';
+        inner += '  <pre class="p-4 rounded-2xl bg-black border border-slate-800 font-mono text-xs sm:text-sm text-slate-100 overflow-x-auto whitespace-pre leading-relaxed">' + escapeHtml(code) + '</pre>';
+        inner += '  <p class="p-3 rounded-xl border border-slate-800 bg-slate-950 text-xs sm:text-sm text-slate-300">💡 ' + comp.explanation + '</p>';
+        inner += '</div>';
+      } else if (slide.type === 'instruction_anatomy' && slide.content.instructionAnatomy) {
+        const anat = slide.content.instructionAnatomy;
+        const activePart = anat.parts[selectedAnatomyIndex] || anat.parts[0];
+        inner += '<div class="space-y-5">';
+        inner += '  <div class="p-4 rounded-2xl bg-black border border-slate-800 font-mono text-sm sm:text-base text-emerald-300 font-bold overflow-x-auto whitespace-pre">' + escapeHtml(anat.instructionStatement) + '</div>';
+        inner += '  <div class="flex flex-wrap gap-2">';
+        anat.parts.forEach((p, pIdx) => {
+          const isAct = pIdx === selectedAnatomyIndex;
+          inner += '    <button onclick="selectAnatomy(' + pIdx + ')" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ' + (isAct ? 'bg-amber-500 text-slate-950 border-amber-400' : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700') + '">';
+          inner += '      <span class="font-mono">' + p.token + '</span> · ' + p.name;
+          inner += '    </button>';
+        });
+        inner += '  </div>';
+        inner += '  <div class="p-5 rounded-2xl border border-amber-500/30 bg-amber-950/20 text-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">';
+        inner += '    <div><strong class="text-amber-400 block mb-1">⚙️ ¿Qué hace en la memoria / procesador?</strong><p>' + activePart.role + '</p></div>';
+        inner += '    <div><strong class="text-emerald-400 block mb-1">💡 Analogía sencilla para cualquiera:</strong><p>"' + activePart.everydayAnalogy + '"</p></div>';
+        inner += '  </div>';
+        inner += '</div>';
+      } else if (slide.type === 'simple_example' && slide.content.simpleExample) {
+        const ex = slide.content.simpleExample;
+        const code = currentLang === 'csharp' ? ex.csharpSnippet : ex.javaSnippet;
+        inner += '<div class="space-y-4">';
+        inner += '  <div class="p-3 rounded-xl border border-amber-500/30 bg-amber-950/20 text-xs sm:text-sm text-amber-300">🎯 <strong>Escenario Cotidiano:</strong> ' + ex.domainScenario + '</div>';
+        inner += '  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">';
+        inner += '    <div><pre class="p-4 rounded-xl bg-black border border-slate-800 font-mono text-xs text-slate-100 overflow-x-auto max-h-64 leading-relaxed">' + escapeHtml(code) + '</pre></div>';
+        inner += '    <div class="space-y-3">';
+        inner += '      <pre class="p-3 rounded-xl bg-black border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto whitespace-pre">' + escapeHtml(ex.consoleOutput) + '</pre>';
+        inner += '      <div class="space-y-1">';
+        ex.stepByStepExplanation.forEach(st => {
+          inner += '        <div class="text-xs text-slate-300 flex items-start gap-1.5"><span>✓</span><span>' + st + '</span></div>';
+        });
+        inner += '      </div>';
+        inner += '    </div>';
+        inner += '  </div>';
+        inner += '</div>';
+      } else if (slide.type === 'common_mistakes' && slide.content.commonMistakes) {
+        inner += '<div class="space-y-4">';
+        slide.content.commonMistakes.forEach(cm => {
+          inner += '  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">';
+          inner += '    <div class="p-4 rounded-2xl border border-rose-500/30 bg-rose-950/20 space-y-2">';
+          inner += '      <strong class="text-rose-400 block">❌ Error Típico:</strong>';
+          inner += '      <pre class="font-mono text-[11px] bg-black p-2 rounded text-rose-300">' + escapeHtml(cm.wrongCode) + '</pre>';
+          inner += '      <p class="text-rose-200">' + cm.wrongExplanation + '</p>';
+          inner += '    </div>';
+          inner += '    <div class="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-950/20 space-y-2">';
+          inner += '      <strong class="text-emerald-400 block">✅ Forma Correcta:</strong>';
+          inner += '      <pre class="font-mono text-[11px] bg-black p-2 rounded text-emerald-300">' + escapeHtml(cm.rightCode) + '</pre>';
+          inner += '      <p class="text-emerald-200">' + cm.rightExplanation + '</p>';
+          inner += '    </div>';
+          inner += '  </div>';
+          inner += '  <div class="p-2.5 rounded-xl border border-amber-500/30 bg-amber-950/20 text-xs text-amber-300 text-center font-bold">⭐ Regla de Oro: ' + cm.ruleOfThumb + '</div>';
+        });
+        inner += '</div>';
+      } else if (slide.type === 'classroom_challenge' && slide.content.challenge) {
+        const ch = slide.content.challenge;
+        inner += '<div class="space-y-4 max-w-xl mx-auto text-center">';
+        inner += '  <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 font-bold text-xs">⏱️ Tiempo: ' + ch.timeMinutes + ' minutos</span>';
+        inner += '  <div class="p-6 rounded-2xl border border-slate-800 bg-black space-y-2">';
+        inner += '    <h3 class="text-xl font-bold text-white">' + ch.question + '</h3>';
+        inner += '    <p class="text-xs text-slate-300">' + ch.instructions + '</p>';
+        inner += '  </div>';
+        inner += '  <div class="p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-xs text-emerald-300 text-left"><strong>✓ Respuesta Sugerida:</strong><p class="mt-1">' + ch.expectedAnswer + '</p></div>';
+        inner += '</div>';
+      } else if (slide.type === 'weekly_activity_bridge' && slide.content.activityBridge) {
+        const ab = slide.content.activityBridge;
+        inner += '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">';
+        inner += '  <div class="p-4 rounded-2xl border border-emerald-500/30 bg-emerald-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-black text-[10px] uppercase">Actividad 1: Básica</span><h4 class="font-bold text-white">' + ab.act1Title + '</h4><p class="text-slate-400">' + ab.act1Desc + '</p></div>';
+        inner += '  <div class="p-4 rounded-2xl border border-blue-500/30 bg-blue-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-black text-[10px] uppercase">Actividad 2: Intermedia</span><h4 class="font-bold text-white">' + ab.act2Title + '</h4><p class="text-slate-400">' + ab.act2Desc + '</p></div>';
+        inner += '  <div class="p-4 rounded-2xl border border-purple-500/30 bg-purple-950/20 space-y-1"><span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-black text-[10px] uppercase">Actividad 3: Entregable</span><h4 class="font-bold text-white">' + ab.act3Title + '</h4><p class="text-slate-400">' + ab.act3Desc + '</p></div>';
+        inner += '</div>';
+      }
+
+      card.innerHTML = inner;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function nextSlide() {
+      if (currentIndex < slides.length - 1) {
+        currentIndex++;
+      } else {
+        currentIndex = 0;
+      }
+      selectedAnatomyIndex = 0;
+      selectedTopicIndex = 0;
+      showAllTopicsGrid = false;
+      renderSlide();
+    }
+
+    function prevSlide() {
+      if (currentIndex > 0) {
+        currentIndex--;
+      } else {
+        currentIndex = slides.length - 1;
+      }
+      selectedAnatomyIndex = 0;
+      selectedTopicIndex = 0;
+      showAllTopicsGrid = false;
+      renderSlide();
+    }
+
+    function selectAnatomy(idx) {
+      selectedAnatomyIndex = idx;
+      renderSlide();
+    }
+
+    function selectTopic(idx) {
+      selectedTopicIndex = idx;
+      renderSlide();
+    }
+
+    function toggleTopicGrid() {
+      showAllTopicsGrid = !showAllTopicsGrid;
+      renderSlide();
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === 'csharp' ? 'java' : 'csharp';
+      const btn = document.getElementById('btn-lang');
+      btn.textContent = currentLang === 'csharp' ? 'C# .NET' : 'Java 17';
+      btn.className = currentLang === 'csharp'
+        ? 'px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold transition-all'
+        : 'px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 text-xs font-black transition-all';
+      renderSlide();
+    }
+
+    function toggleTheme() {
+      isDark = !isDark;
+      document.body.className = isDark
+        ? 'bg-slate-950 text-slate-100 min-h-screen flex flex-col'
+        : 'bg-slate-100 text-slate-900 min-h-screen flex flex-col';
+      const card = document.getElementById('slide-card');
+      if (card) {
+        card.className = isDark
+          ? 'bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl min-h-[580px] flex flex-col justify-between transition-all'
+          : 'bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-xl min-h-[580px] flex flex-col justify-between transition-all';
+      }
+      renderSlide();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      }
+    });
+
+    renderSlide();
+  </script>
+</body>
+</html>
